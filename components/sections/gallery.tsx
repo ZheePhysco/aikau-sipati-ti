@@ -3,7 +3,6 @@
 import { useRef, useState, useEffect } from "react";
 import { useLanguage } from "@/components/providers/language-provider";
 import { SmartImage } from "@/components/ui/smart-image";
-import { IMAGES } from "@/lib/image-config";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
@@ -17,17 +16,38 @@ export function Gallery() {
   const { language, t } = useLanguage();
   const sectionRef = useRef<HTMLElement>(null);
   const gridRef = useRef<HTMLDivElement>(null);
+  const modalRef = useRef<HTMLDivElement>(null);
 
-  const galleryPhotos = IMAGES.gallery.map((src, index) => ({
-    id: `photo-${index}`,
-    src,
-    category: index % 3 === 0 ? "Atmosphere" : (index % 2 === 0 ? "Flash" : "Recent")
-  }));
-
+  const [galleryPhotos, setGalleryPhotos] = useState<{ id: string; src: string; category: string }[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [isExpanded, setIsExpanded] = useState(false);
   const [modalMounted, setModalMounted] = useState(false);
+
   const initialPhotos = galleryPhotos.slice(0, 6);
-  const modalRef = useRef<HTMLDivElement>(null);
+
+  // Fetch gallery photos dynamically from API
+  useEffect(() => {
+    async function fetchGallery() {
+      try {
+        const res = await fetch('/api/gallery');
+        const data = await res.json();
+        if (data.images) {
+          const photos = data.images.map((src: string, index: number) => ({
+            id: `photo-${index}`,
+            src,
+            category: index % 3 === 0 ? "Atmosphere" : (index % 2 === 0 ? "Flash" : "Recent")
+          }));
+          setGalleryPhotos(photos);
+        }
+      } catch (error) {
+        console.error('Failed to fetch gallery:', error);
+        setGalleryPhotos([]);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    fetchGallery();
+  }, []);
 
   // Lock body scroll when modal is open
   useEffect(() => {
@@ -100,7 +120,16 @@ export function Gallery() {
 
           {/* Initial Grid 2-3 Columns */}
           <div ref={gridRef} className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-3">
-            {initialPhotos.map((photo) => (
+            {isLoading ? (
+              <div className="col-span-full text-center text-muted-foreground py-12">
+                Loading...
+              </div>
+            ) : initialPhotos.length === 0 ? (
+              <div className="col-span-full text-center text-muted-foreground py-12">
+                {language === "en" ? "No photos yet" : "Belum ada foto"}
+              </div>
+            ) : (
+              initialPhotos.map((photo) => (
               <div
                 key={photo.id}
                 className="photo-card group relative block w-full overflow-hidden rounded-2xl border border-border/10 bg-surface/50 p-2 transition-colors hover:bg-surface shadow-lg hover:shadow-xl"
@@ -115,7 +144,8 @@ export function Gallery() {
                   />
                 </div>
               </div>
-            ))}
+              ))
+            )}
           </div>
 
           <div className="mt-16 flex justify-center">
@@ -150,7 +180,12 @@ export function Gallery() {
           {/* Scrollable Masonry Grid */}
           <div className="flex-1 overflow-y-auto p-4 md:p-8 relative z-10" data-lenis-prevent="true">
             <div className="columns-1 md:columns-2 lg:columns-3 gap-6 space-y-6 max-w-[1920px] mx-auto pb-24">
-              {galleryPhotos.map((photo, index) => (
+              {galleryPhotos.length === 0 ? (
+                <div className="text-center text-muted-foreground py-12">
+                  {language === "en" ? "No photos yet" : "Belum ada foto"}
+                </div>
+              ) : (
+                galleryPhotos.map((photo, index) => (
                 <div
                   key={`full-${photo.id}`}
                   className="gallery-modal-item group relative block w-full overflow-hidden rounded-2xl border border-border/10 bg-surface/50 p-2 transition-colors hover:bg-surface"
@@ -166,7 +201,8 @@ export function Gallery() {
                     />
                   </div>
                 </div>
-              ))}
+                ))
+              )}
             </div>
           </div>
         </div>

@@ -375,7 +375,7 @@ export function Projects() {
               </div>
 
               {/* ── INFO PANEL (right) ──────────────────────────── */}
-              <div className="modal-right w-full flex-1 md:flex-none md:w-[42%] md:h-full flex flex-col bg-background border-t border-[rgba(196,163,90,0.10)] md:border-t-0 md:border-l md:border-[rgba(196,163,90,0.10)] modal-content-area">
+              <div className="modal-right w-full flex-1 min-h-[52svh] md:flex-none md:w-[42%] md:h-full flex flex-col bg-background border-t border-[rgba(196,163,90,0.10)] md:border-t-0 md:border-l md:border-[rgba(196,163,90,0.10)] modal-content-area">
 
                 {/* Header bar: category + close */}
                 <div className="flex-shrink-0 flex items-center justify-between px-6 md:px-10 py-4 border-b border-[rgba(196,163,90,0.08)]">

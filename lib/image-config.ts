@@ -4,6 +4,11 @@
 // 1. Taruh foto di folder yang sesuai (lihat public/images/*/README.txt)
 // 2. Update nama file di bawah ini
 // 3. Selesai — tidak perlu sentuh file lain
+//
+// CATATAN KHUSUS GALLERY:
+// Gallery sekarang DINAMIS — tidak perlu edit code.
+// Cukup tambah/hapus file di folder public/images/gallery/
+// Website otomatis akan menyesuaikan saat di-refresh.
 // ================================================
 
 export const IMAGES = {
