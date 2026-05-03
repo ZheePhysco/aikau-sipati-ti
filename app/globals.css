@@ -120,6 +120,34 @@ html.lenis body {
   cursor: none !important;
 }
 
+/* Hero background — responsive object-position */
+@media (max-width: 767px) {
+  .hero-bg {
+    object-position: 55% 15% !important;
+  }
+}
+
+/* Image Utilities */
+.image-overlay {
+  background-color: rgba(8, 7, 5, 0.45);
+}
+
+.image-color-grade {
+  filter: brightness(0.75) contrast(1.1) saturate(0.85);
+}
+
+.section-spacing {
+  padding-top: 4rem;
+  padding-bottom: 4rem;
+}
+
+@media (min-width: 768px) {
+  .section-spacing {
+    padding-top: 6rem;
+    padding-bottom: 6rem;
+  }
+}
+
 /* Gold gradient text */
 .text-gradient-gold {
   background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%);

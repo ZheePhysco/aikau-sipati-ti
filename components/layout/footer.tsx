@@ -38,7 +38,7 @@ export function Footer() {
 
   return (
     <footer className="border-t border-accent/20 bg-background">
-      <div className="mx-auto max-w-7xl px-6 py-16">
+      <div className="mx-auto max-w-7xl px-6 md:px-12 lg:px-20 py-16">
         {/* Top section */}
         <div className="mb-16 flex flex-col items-center text-center">
           <BrandMark size="md" />

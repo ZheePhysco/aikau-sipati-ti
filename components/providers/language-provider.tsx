@@ -144,12 +144,12 @@ const translations: Record<Language, Translations> = {
         "In the Mentawai tradition, tattoos are not decoration—they are identity. Each symbol carries the weight of generations, marking rites of passage, spiritual protection, and connection to the natural world.",
       text2:
         "At Siolaakenen Muti'ti, we honor this sacred practice through the ancient art of hand-tapping, creating marks that speak to your personal journey while respecting the traditions from which they come.",
-      stat1: "7000+",
-      stat1Label: "Years of Tradition",
+      stat1: "Centuries",
+      stat1Label: "Of living titi tradition in the Mentawai Islands",
       stat2: "100%",
-      stat2Label: "Hand Tapped, No Machine",
-      stat3: "∞",
-      stat3Label: "Stories Carried on Skin",
+      stat2Label: "Hand Tapped — no machine, no shortcut",
+      stat3: "Siberut",
+      stat3Label: "UNESCO Biosphere Reserve & home of traditional titi",
     },
     gallery: {
       label: "The Work",
@@ -189,9 +189,9 @@ const translations: Record<Language, Translations> = {
       quote:
         "Every tap is a conversation between the ancestors and the skin. I am just the hand.",
       bio1:
-        "Edo is a traditional Mentawai tattoo artist who has dedicated his life to preserving and sharing the sacred art of his ancestors. Born into a lineage of Sikerei (shamans), he learned the ancient patterns and their meanings from elders in the Siberut jungle.",
+        "Aikau Sipati'ti is a traditional Mentawai tattoo artist who has dedicated his life to preserving and sharing the sacred art of his ancestors. Born into a lineage of Sikerei (shamans), he learned the ancient patterns and their meanings from elders in the Siberut jungle.",
       bio2:
-        "After years of studying both traditional techniques and modern safety practices, Edo founded Siolaakenen Muti'ti to create a bridge between ancient wisdom and contemporary seekers. His work has been featured in cultural exhibitions across Indonesia and beyond.",
+        "After years of studying both traditional techniques and modern safety practices, Aikau Sipati'ti founded Siolaakenen Muti'ti to create a bridge between ancient wisdom and contemporary seekers. His work has been featured in cultural exhibitions across Indonesia and beyond.",
       heritage: "Heritage",
       heritageValue: "Mentawai Sikerei Lineage",
       experience: "Experience",
@@ -272,12 +272,12 @@ const translations: Record<Language, Translations> = {
         "Dalam tradisi Mentawai, tato bukan dekorasi—mereka adalah identitas. Setiap simbol membawa bobot generasi, menandai ritual peralihan, perlindungan spiritual, dan koneksi dengan alam.",
       text2:
         "Di Siolaakenen Muti'ti, kami menghormati praktik sakral ini melalui seni kuno hand-tapping, menciptakan tanda yang berbicara tentang perjalanan pribadi Anda sambil menghormati tradisi asalnya.",
-      stat1: "7000+",
-      stat1Label: "Tahun Tradisi",
+      stat1: "Berabad",
+      stat1Label: "Tradisi titi yang masih hidup di Kepulauan Mentawai",
       stat2: "100%",
-      stat2Label: "Hand Tapped, Tanpa Mesin",
-      stat3: "∞",
-      stat3Label: "Cerita di Kulit",
+      stat2Label: "Hand Tapping — tanpa mesin, tanpa jalan pintas",
+      stat3: "Siberut",
+      stat3Label: "Cagar Biosfer UNESCO & rumah tradisi titi",
     },
     gallery: {
       label: "Karya",
@@ -317,9 +317,9 @@ const translations: Record<Language, Translations> = {
       quote:
         "Setiap ketukan adalah percakapan antara leluhur dan kulit. Saya hanyalah tangannya.",
       bio1:
-        "Edo adalah seniman tato tradisional Mentawai yang mendedikasikan hidupnya untuk melestarikan dan berbagi seni sakral leluhurnya. Lahir dalam garis keturunan Sikerei (dukun), ia belajar pola kuno dan maknanya dari tetua di hutan Siberut.",
+        "Aikau Sipati'ti adalah seniman tato tradisional Mentawai yang mendedikasikan hidupnya untuk melestarikan dan berbagi seni sakral leluhurnya. Lahir dalam garis keturunan Sikerei (dukun), ia belajar pola kuno dan maknanya dari tetua di hutan Siberut.",
       bio2:
-        "Setelah bertahun-tahun mempelajari teknik tradisional dan praktik keamanan modern, Edo mendirikan Siolaakenen Muti'ti untuk menjembatani kebijaksanaan kuno dan pencari kontemporer. Karyanya telah ditampilkan di pameran budaya di seluruh Indonesia dan sekitarnya.",
+        "Setelah bertahun-tahun mempelajari teknik tradisional dan praktik keamanan modern, Aikau Sipati'ti mendirikan Siolaakenen Muti'ti untuk menjembatani kebijaksanaan kuno dan pencari kontemporer. Karyanya telah ditampilkan di pameran budaya di seluruh Indonesia dan sekitarnya.",
       heritage: "Warisan",
       heritageValue: "Garis Keturunan Sikerei Mentawai",
       experience: "Pengalaman",

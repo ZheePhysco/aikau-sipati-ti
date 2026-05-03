@@ -39,7 +39,7 @@ export function Aftercare() {
       ref={sectionRef}
       className="bg-surface py-24 md:py-32"
     >
-      <div className="mx-auto max-w-7xl px-6">
+      <div className="mx-auto max-w-7xl px-6 md:px-12 lg:px-20">
         <div className="grid gap-12 lg:grid-cols-2 lg:gap-16">
           {/* Left column - sticky */}
           <div className="lg:sticky lg:top-32 lg:self-start">

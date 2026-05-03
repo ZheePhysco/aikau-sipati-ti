@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useLanguage } from "@/components/providers/language-provider";
-import { TattooVisual } from "@/components/ui/tattoo-visual";
 import { SmartImage } from "@/components/ui/smart-image";
 import { IMAGES } from "@/lib/image-config";
 import { BrandMark } from "@/components/ui/brand-mark";
@@ -21,12 +20,12 @@ export function Hero() {
   const bgRef = useRef<HTMLDivElement>(null);
 
   useGSAP(() => {
-    // Parallax background
+    // Parallax background - hero images scale from 1.06 to 1 on enter viewport
     if (bgRef.current && sectionRef.current) {
-      gsap.fromTo(bgRef.current,
-        { yPercent: 0 },
+      gsap.fromTo(bgRef.current.querySelector('img')!,
+        { scale: 1.06 },
         {
-          yPercent: 20,
+          scale: 1,
           ease: "none",
           scrollTrigger: {
             trigger: sectionRef.current,
@@ -45,8 +44,9 @@ export function Hero() {
     
     // Initial state setup (if not handled via CSS initially)
     gsap.set('.brand-mark-center', { scale: 0.8, opacity: 0 });
-    gsap.set('.curtain', { scaleY: 1, transformOrigin: "top" });
+    gsap.set('.curtain', { scaleY: 1, transformOrigin: "bottom" });
     gsap.set('.hero-eyebrow', { y: 20, opacity: 0 });
+    gsap.set('.divider-line', { scaleX: 0, transformOrigin: "left" });
     gsap.set('.hero-h1-1', { y: 80, skewY: 3, opacity: 0 });
     gsap.set('.hero-h1-2', { y: 80, skewY: 3, opacity: 0 });
     gsap.set('.hero-h1-3', { y: 80, skewY: 3, opacity: 0 });
@@ -57,7 +57,8 @@ export function Hero() {
       .to('.brand-mark-center', { y: -200, opacity: 0, duration: 0.4 }, "+=0.4") // Move up and fade out before curtain
       .to('.curtain', { scaleY: 0, duration: 0.8, ease: "power3.inOut" }, "-=0.2")
       .to('.hero-eyebrow', { y: 0, opacity: 1, duration: 0.6 }, "-=0.2")
-      .to('.hero-h1-1', { y: 0, skewY: 0, opacity: 1, duration: 0.6 }, "-=0.4")
+      .to('.divider-line', { scaleX: 1, duration: 1.2, ease: "power3.out" }, "-=0.4")
+      .to('.hero-h1-1', { y: 0, skewY: 0, opacity: 1, duration: 0.6 }, "-=1.0")
       .to('.hero-h1-2', { y: 0, skewY: 0, opacity: 1, duration: 0.6 }, "-=0.45")
       .to('.hero-h1-3', { y: 0, skewY: 0, opacity: 1, duration: 0.6 }, "-=0.45")
       .to('.hero-subtext', { y: 0, opacity: 1, duration: 0.6 }, "-=0.4")
@@ -85,7 +86,7 @@ export function Hero() {
 
       <section
         ref={sectionRef}
-        className="relative flex min-h-screen items-end overflow-hidden bg-background pb-20 pt-32"
+        className="relative flex min-h-[100svh] items-end overflow-hidden bg-background"
       >
         {/* Background photo */}
         <div ref={bgRef} className="absolute inset-0 z-0 h-[120%] w-full -top-[10%]">
@@ -95,27 +96,27 @@ export function Hero() {
             fill
             priority
             fallbackPattern="warrior"
-            className="object-cover opacity-60"
+            noOverlay
+            noGrade
+            className="object-cover hero-bg"
+            style={{ objectPosition: '65% 15%', filter: 'brightness(0.92) contrast(1.05) saturate(0.88)' }}
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent" />
+          {/* Layer 1: Horizontal Gradient — desktop: dark left, light right */}
+          <div className="absolute inset-0 z-10 hidden md:block" style={{ background: 'linear-gradient(to right, rgba(8,7,5,0.78) 30%, rgba(8,7,5,0.1) 100%)' }} />
+          {/* Layer 1b: Mobile gradient — darken top & fade to show subject, heavy at bottom for text */}
+          <div className="absolute inset-0 z-10 md:hidden" style={{ background: 'linear-gradient(to bottom, rgba(8,7,5,0.55) 0%, rgba(8,7,5,0.2) 35%, rgba(8,7,5,0.85) 70%, rgba(8,7,5,1) 100%)' }} />
+          {/* Layer 2: Vertical Gradient — desktop only */}
+          <div className="absolute inset-0 z-20 hidden md:block" style={{ background: 'linear-gradient(to top, rgba(8,7,5,1) 0%, transparent 40%)' }} />
         </div>
 
-        {/* Mandala decoration */}
-        <div className="pointer-events-none absolute -right-32 top-1/2 -translate-y-1/2 text-accent lg:-right-16 z-10">
-          <TattooVisual
-            variant="mandala"
-            className="h-[600px] w-[600px] lg:h-[800px] lg:w-[800px]"
-            opacity={0.08}
-          />
-        </div>
-
-        {/* Content */}
-        <div className="relative z-20 mx-auto w-full max-w-7xl px-6">
-          <div className="max-w-4xl">
-            {/* Eyebrow */}
-            <p className="hero-eyebrow mb-8 text-xs font-medium uppercase tracking-[0.2em] text-accent">
+        {/* Content - consistent spacing */}
+        <div className="relative z-20 mx-auto w-full max-w-7xl px-6 md:px-12 lg:px-20 section-spacing">
+          <div className="max-w-xl md:max-w-2xl lg:max-w-3xl">
+            {/* Eyebrow with divider */}
+            <p className="hero-eyebrow mb-4 text-xs font-medium uppercase tracking-[0.2em] text-accent">
               {t.hero.eyebrow}
             </p>
+            <div className="divider-line h-px w-16 bg-accent mb-8"></div>
 
             {/* Headline */}
             <h1 className="mb-8">

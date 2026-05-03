@@ -41,7 +41,7 @@ export function Artist() {
       id="artist"
       className="bg-background py-24 md:py-32"
     >
-      <div className="mx-auto max-w-7xl px-6">
+      <div className="mx-auto max-w-7xl px-6 md:px-12 lg:px-20">
         {/* Section label */}
         <p
           className="mb-12 text-xs font-medium uppercase tracking-[0.2em] text-accent"

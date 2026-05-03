@@ -56,13 +56,13 @@ export function Navbar() {
           {/* Brand Mark */}
           <button
             onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-            className="transition-opacity hover:opacity-80"
+            className="flex items-center transition-opacity hover:opacity-80"
           >
             <BrandMark size="sm" />
           </button>
 
           {/* Desktop Navigation */}
-          <div className="hidden items-center gap-8 md:flex">
+          <div className="hidden items-center gap-10 md:flex">
             {navLinks.map((link) => (
               <button
                 key={link.href}
@@ -75,7 +75,7 @@ export function Navbar() {
           </div>
 
           {/* Right side */}
-          <div className="hidden items-center gap-4 md:flex">
+          <div className="hidden items-center gap-6 md:flex">
             {/* Language Toggle */}
             <div className="flex items-center border border-accent/30">
               <button

@@ -57,7 +57,7 @@ export function Booking() {
         }}
       />
 
-      <div className="relative z-10 mx-auto w-full max-w-5xl px-6 text-center">
+      <div className="relative z-10 mx-auto w-full max-w-5xl px-6 md:px-12 lg:px-20 text-center">
         {/* Label */}
         <p
           className="mb-6 text-xs font-medium uppercase tracking-[0.2em] text-accent"

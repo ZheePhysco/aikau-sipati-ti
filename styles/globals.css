@@ -123,3 +123,111 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Dark overlay and color grading for all images */
+.image-overlay {
+  position: relative;
+}
+
+.image-overlay::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(8, 7, 5, 0.45);
+  z-index: 1;
+  pointer-events: none;
+}
+
+.image-dark-grading {
+  filter: brightness(0.75) contrast(1.1) saturate(0.85);
+}
+
+/* Consistent section spacing */
+.section-spacing {
+  padding-top: 6rem;
+  padding-bottom: 6rem;
+}
+
+@media (min-width: 768px) {
+  .section-spacing {
+    padding-top: 10rem;
+    padding-bottom: 10rem;
+  }
+}
+
+/* Divider line animations */
+.divider-line {
+  transform-origin: left center;
+  transform: scaleX(0);
+}
+
+.divider-line.animate {
+  animation: scaleXIn 1.2s ease-out forwards;
+}
+
+@keyframes scaleXIn {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+/* Project row slide-from-left animation (CSS only, no JS inline styles) */
+.project-row {
+  opacity: 0;
+  transform: translateX(-50px);
+  transition: opacity 0.7s cubic-bezier(0.16,1,0.3,1),
+              transform 0.7s cubic-bezier(0.16,1,0.3,1);
+}
+.project-row.visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Cinematic photo filter — blend with dark theme */
+.photo-cinematic {
+  filter: brightness(0.80) contrast(1.05) saturate(0.85);
+}
+
+/* Booking contact bar — fill from left on hover */
+.contact-bar {
+  position: relative;
+  overflow: hidden;
+}
+.contact-bar::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--color-accent, #C4A35A);
+  transform: translateX(-100%);
+  transition: transform 0.5s cubic-bezier(0.16,1,0.3,1);
+  z-index: 0;
+}
+.contact-bar:hover::before {
+  transform: translateX(0);
+}
+.contact-bar-content {
+  position: relative;
+  z-index: 1;
+  transition: color 0.3s ease;
+}
+.contact-bar:hover .contact-bar-content {
+  color: #080705;
+}
+
+/* Respect reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .project-row {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}

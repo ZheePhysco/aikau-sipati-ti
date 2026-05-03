@@ -36,7 +36,7 @@ export const IMAGES = {
   ],
 
   // LOGO
-  logo: '/images/logo.jpg',
+  logo: '/images/brand/logo.jpg',
 
   // PROJECTS (detail page setiap karya)
   projects: [

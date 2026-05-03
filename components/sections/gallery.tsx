@@ -25,23 +25,25 @@ export function Gallery() {
   }));
 
   const [isExpanded, setIsExpanded] = useState(false);
+  const [modalMounted, setModalMounted] = useState(false);
   const initialPhotos = galleryPhotos.slice(0, 6);
+  const modalRef = useRef<HTMLDivElement>(null);
 
   // Lock body scroll when modal is open
   useEffect(() => {
-    if (isExpanded) {
+    if (modalMounted) {
       document.body.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "";
     }
-  }, [isExpanded]);
+  }, [modalMounted]);
 
   useGSAP(() => {
     const cards = gsap.utils.toArray('.photo-card');
     if (cards.length > 0) {
       gsap.fromTo(cards, 
-        { y: 50, opacity: 0 },
-        { y: 0, opacity: 1, stagger: 0.08, ease: "power2.out", scrollTrigger: { trigger: gridRef.current, start: "top 80%" } }
+        { y: 48, opacity: 0, scale: 0.96 },
+        { y: 0, opacity: 1, scale: 1, stagger: 0.08, ease: "power2.out", scrollTrigger: { trigger: gridRef.current, start: "top 80%" } }
       );
     }
     gsap.fromTo('.gallery-title',
@@ -50,11 +52,41 @@ export function Gallery() {
     );
   }, { scope: sectionRef });
 
+  const openModal = () => {
+    setIsExpanded(true);
+    setModalMounted(true);
+  };
+
+  useEffect(() => {
+    if (isExpanded && modalRef.current) {
+      const tl = gsap.timeline();
+      tl.fromTo(modalRef.current.querySelector('.gallery-modal-bg'), { opacity: 0 }, { opacity: 1, duration: 0.4 })
+        .fromTo(modalRef.current.querySelector('.gallery-modal-header'), { y: -20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.4 }, "-=0.2")
+        .fromTo(modalRef.current.querySelectorAll('.gallery-modal-item'), 
+          { y: 30, opacity: 0, scale: 0.98 }, 
+          { y: 0, opacity: 1, scale: 1, stagger: 0.05, duration: 0.5, ease: "power2.out" }, "-=0.2");
+    }
+  }, [isExpanded]);
+
+  const closeModal = () => {
+    if (modalRef.current) {
+      const tl = gsap.timeline({ onComplete: () => {
+        setIsExpanded(false);
+        setModalMounted(false);
+      }});
+      tl.to(modalRef.current.querySelectorAll('.gallery-modal-item'), { y: 20, opacity: 0, scale: 0.98, duration: 0.3, stagger: 0.02 })
+        .to(modalRef.current.querySelector('.gallery-modal-header'), { y: -20, opacity: 0, duration: 0.3 }, "-=0.2")
+        .to(modalRef.current.querySelector('.gallery-modal-bg'), { opacity: 0, duration: 0.4 }, "-=0.2");
+    } else {
+      setIsExpanded(false);
+      setModalMounted(false);
+    }
+  };
 
   return (
     <>
-      <section ref={sectionRef} id="gallery" className="bg-surface py-24 md:py-32 border-t border-border/10">
-        <div className="mx-auto max-w-7xl px-6">
+      <section ref={sectionRef} id="gallery" className="bg-surface section-spacing border-t border-border/10">
+        <div className="mx-auto max-w-7xl px-6 md:px-12 lg:px-20">
           <div className="mb-16 flex flex-col md:flex-row md:items-end justify-between gap-8">
             <div>
               <p className="mb-4 text-xs font-medium uppercase tracking-[0.2em] text-accent">
@@ -66,22 +98,21 @@ export function Gallery() {
             </div>
           </div>
 
-          {/* Initial Grid 2x3 */}
-          <div ref={gridRef} className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
+          {/* Initial Grid 2-3 Columns */}
+          <div ref={gridRef} className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-3">
             {initialPhotos.map((photo) => (
               <div
                 key={photo.id}
-                className="photo-card group relative block w-full overflow-hidden rounded-2xl border border-border/10 bg-surface/50 p-2 transition-colors hover:bg-surface"
+                className="photo-card group relative block w-full overflow-hidden rounded-2xl border border-border/10 bg-surface/50 p-2 transition-colors hover:bg-surface shadow-lg hover:shadow-xl"
               >
-                <div className="relative w-full overflow-hidden rounded-xl aspect-[4/5]">
+                <div className="relative w-full overflow-hidden rounded-xl aspect-[3/4]">
                   <SmartImage
                     src={photo.src}
                     alt={`Gallery Photo ${photo.id}`}
                     fill
                     fallbackPattern="forest"
-                    className="transition-transform duration-700 group-hover:scale-105"
+                    className="photo-cinematic transition-transform duration-700 group-hover:scale-105"
                   />
-                  <div className="absolute inset-0 bg-background/50 mix-blend-multiply transition-opacity duration-500 group-hover:opacity-0 pointer-events-none" />
                 </div>
               </div>
             ))}
@@ -89,7 +120,7 @@ export function Gallery() {
 
           <div className="mt-16 flex justify-center">
             <button
-              onClick={() => setIsExpanded(true)}
+              onClick={openModal}
               className="rounded-full border border-accent px-8 py-3 text-sm tracking-wide text-accent transition-colors hover:bg-accent hover:text-background"
             >
               {language === "en" ? "View Full Gallery" : "Lihat Semua Galeri"}
@@ -100,30 +131,32 @@ export function Gallery() {
 
       {/* Full Screen Gallery Modal */}
       {isExpanded && (
-        <div className="fixed inset-0 z-[100] flex flex-col bg-background overflow-hidden">
+        <div ref={modalRef} className="fixed inset-0 z-[100] flex flex-col overflow-hidden">
+          <div className="gallery-modal-bg absolute inset-0 bg-background" />
+          
           {/* Header Bar */}
-          <div className="flex items-center justify-between p-6 md:p-8 border-b border-border/10 bg-background/80 backdrop-blur z-10 shrink-0">
-            <h2 className="font-serif text-2xl italic text-foreground">
+          <div className="gallery-modal-header flex flex-col md:flex-row items-start md:items-center justify-between gap-4 p-6 md:p-8 border-b border-border/10 bg-background/80 backdrop-blur z-10 shrink-0">
+            <h2 className="font-serif text-2xl md:text-3xl italic text-foreground">
               {language === "en" ? "Full Visual Diary" : "Buku Visual Penuh"}
             </h2>
             <button 
-              onClick={() => setIsExpanded(false)} 
-              className="flex items-center gap-2 rounded-full bg-surface px-6 py-2 text-sm font-medium tracking-widest uppercase text-foreground/70 border border-border/20 transition-colors hover:text-accent hover:border-accent/50"
+              onClick={closeModal} 
+              className="flex items-center gap-2 rounded-full bg-surface/80 backdrop-blur-sm px-6 py-3 text-xs md:text-sm font-medium tracking-[0.2em] uppercase text-foreground border border-border/20 transition-all hover:bg-accent hover:text-background hover:scale-105 shadow-xl"
             >
-              <span className="text-xl leading-none">✕</span> Kembali
+              <span className="text-lg leading-none">✕</span> {language === "en" ? "Back to Dashboard" : "Kembali ke Beranda"}
             </button>
           </div>
           
           {/* Scrollable Masonry Grid */}
-          <div className="flex-1 overflow-y-auto p-6 md:p-8">
-            <div className="columns-2 lg:columns-4 gap-4 space-y-4 max-w-[1920px] mx-auto">
+          <div className="flex-1 overflow-y-auto p-4 md:p-8 relative z-10" data-lenis-prevent="true">
+            <div className="columns-1 md:columns-2 lg:columns-3 gap-6 space-y-6 max-w-[1920px] mx-auto pb-24">
               {galleryPhotos.map((photo, index) => (
                 <div
                   key={`full-${photo.id}`}
-                  className="group relative block w-full overflow-hidden rounded-2xl border border-border/10 bg-surface/50 p-2 transition-colors hover:bg-surface"
+                  className="gallery-modal-item group relative block w-full overflow-hidden rounded-2xl border border-border/10 bg-surface/50 p-2 transition-colors hover:bg-surface"
                   style={{ breakInside: 'avoid' }}
                 >
-                  <div className="relative w-full overflow-hidden rounded-xl" style={{ aspectRatio: index % 2 === 0 ? '3/4' : '4/5' }}>
+                  <div className="relative w-full overflow-hidden rounded-xl aspect-[3/4]">
                     <SmartImage
                       src={photo.src}
                       alt={`Gallery Photo ${photo.id}`}
@@ -131,7 +164,6 @@ export function Gallery() {
                       fallbackPattern="forest"
                       className="transition-transform duration-700 group-hover:scale-105"
                     />
-                    <div className="absolute inset-0 bg-background/50 mix-blend-multiply transition-opacity duration-500 group-hover:opacity-0 pointer-events-none" />
                   </div>
                 </div>
               ))}
