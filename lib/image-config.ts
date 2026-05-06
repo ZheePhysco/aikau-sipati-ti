@@ -13,7 +13,7 @@
 
 export const IMAGES = {
   // HERO BACKGROUND
-  hero: '/images/hero/bg.png',
+  hero: '/images/hero/bg.jpeg',
 
   // ARTIST PHOTO
   artist: '/images/artist/edo.jpg',

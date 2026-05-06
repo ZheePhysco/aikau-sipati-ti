@@ -86,7 +86,7 @@ export function BrandMark({ size = "md", className = "" }: BrandMarkProps) {
 
         {s.tagline && !isSmall && (
           <span className="mt-1.5 font-serif text-[9px] italic text-muted-foreground opacity-75 tracking-[0.08em]">
-            Come, Get Tattooed
+            Sacred marks. Ancient hands.
           </span>
         )}
       </div>

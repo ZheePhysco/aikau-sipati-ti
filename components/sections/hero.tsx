@@ -104,20 +104,20 @@ export function Hero() {
             style={{ objectPosition: "65% 15%", filter: "brightness(0.88) contrast(1.06) saturate(0.78)" }}
           />
 
-          {/* Desktop gradient — dark left for text, reveals subject right */}
+          {/* Desktop gradient — diagonal, dark left for text, reveals subject right */}
           <div
             className="absolute inset-0 z-10 hidden md:block"
-            style={{ background: "linear-gradient(to right, rgba(13,12,10,0.85) 25%, rgba(13,12,10,0.08) 100%)" }}
+            style={{ background: "linear-gradient(105deg, rgba(13,12,10,0.94) 0%, rgba(13,12,10,0.84) 28%, rgba(13,12,10,0.1) 66%, rgba(13,12,10,0) 100%)" }}
           />
-          {/* Mobile gradient */}
+          {/* Mobile gradient — natural top vignette → clear subject → dark bottom for text */}
           <div
             className="absolute inset-0 z-10 md:hidden"
-            style={{ background: "linear-gradient(to bottom, rgba(13,12,10,0.6) 0%, rgba(13,12,10,0.15) 35%, rgba(13,12,10,0.88) 70%, rgba(13,12,10,1) 100%)" }}
+            style={{ background: "linear-gradient(to bottom, rgba(13,12,10,0.22) 0%, rgba(13,12,10,0) 22%, rgba(13,12,10,0.38) 56%, rgba(13,12,10,0.88) 76%, rgba(13,12,10,1) 100%)" }}
           />
-          {/* Bottom vignette — desktop */}
+          {/* Bottom vignette — desktop, extended for smooth page blend */}
           <div
             className="absolute inset-0 z-20 hidden md:block"
-            style={{ background: "linear-gradient(to top, rgba(13,12,10,1) 0%, transparent 38%)" }}
+            style={{ background: "linear-gradient(to top, rgba(13,12,10,1) 0%, rgba(13,12,10,0.5) 22%, transparent 44%)" }}
           />
         </div>
 

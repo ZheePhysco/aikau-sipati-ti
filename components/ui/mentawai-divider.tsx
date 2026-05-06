@@ -1,5 +1,7 @@
 "use client";
 
+import { useRef, useState, useEffect, type CSSProperties } from "react";
+
 interface MentawaiDividerProps {
   variant?: "horizontal" | "border-top" | "ornament" | "band";
   className?: string;
@@ -15,11 +17,30 @@ export function MentawaiDivider({
   className = "",
   color = "currentColor",
 }: MentawaiDividerProps) {
+  const ornamentRef = useRef<HTMLDivElement>(null);
+  const [drawn, setDrawn] = useState(false);
+
+  useEffect(() => {
+    if (variant !== "ornament") return;
+    const el = ornamentRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setDrawn(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.5 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [variant]);
 
   if (variant === "ornament") {
-    // Central ornament — used inline as decorative accent between label and title
+    // Central ornament — SVG lines draw themselves on scroll
     return (
-      <div className={`flex items-center justify-center py-3 ${className}`} aria-hidden="true">
+      <div ref={ornamentRef} className={`flex items-center justify-center py-3 ${className}`} aria-hidden="true">
         <svg
           viewBox="0 0 240 24"
           className="w-48 md:w-64"
@@ -27,24 +48,67 @@ export function MentawaiDivider({
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
         >
-          {/* Left arm */}
-          <line x1="0" y1="12" x2="80" y2="12" stroke={color} strokeWidth="0.75" />
+          {/* Left arm — draws left to right */}
+          <line
+            x1="0" y1="12" x2="80" y2="12"
+            stroke={color} strokeWidth="0.75"
+            className={`motif-draw${drawn ? " animate" : ""}`}
+            style={{ "--dash-len": "80", animationDelay: "0s" } as CSSProperties}
+          />
           {/* Left chevrons */}
-          <path d="M72 6 L80 12 L72 18" stroke={color} strokeWidth="0.75" fill="none" />
-          <path d="M64 6 L72 12 L64 18" stroke={color} strokeWidth="0.75" fill="none" />
+          <path
+            d="M72 6 L80 12 L72 18"
+            stroke={color} strokeWidth="0.75" fill="none"
+            className={`motif-draw${drawn ? " animate" : ""}`}
+            style={{ "--dash-len": "20", animationDelay: "0.28s" } as CSSProperties}
+          />
+          <path
+            d="M64 6 L72 12 L64 18"
+            stroke={color} strokeWidth="0.75" fill="none"
+            className={`motif-draw${drawn ? " animate" : ""}`}
+            style={{ "--dash-len": "20", animationDelay: "0.4s" } as CSSProperties}
+          />
 
-          {/* Center diamond */}
-          <rect x="110" y="4" width="20" height="16" transform="rotate(45 120 12)" stroke={color} strokeWidth="0.75" fill="none" />
-          <circle cx="120" cy="12" r="2.5" fill={color} />
-          {/* Dot accents */}
-          <circle cx="100" cy="12" r="1.5" fill={color} opacity="0.5" />
-          <circle cx="140" cy="12" r="1.5" fill={color} opacity="0.5" />
+          {/* Center diamond — draws its perimeter */}
+          <rect
+            x="110" y="4" width="20" height="16"
+            transform="rotate(45 120 12)"
+            stroke={color} strokeWidth="0.75" fill="none"
+            className={`motif-draw${drawn ? " animate" : ""}`}
+            style={{ "--dash-len": "72", animationDelay: "0.55s" } as CSSProperties}
+          />
+          {/* Center dot — instant, no draw */}
+          <circle cx="120" cy="12" r="2.5" fill={color}
+            style={{ opacity: drawn ? 1 : 0, transition: "opacity 0.3s ease 0.95s" }}
+          />
+          {/* Flanking dots */}
+          <circle cx="100" cy="12" r="1.5" fill={color} opacity="0.5"
+            style={{ opacity: drawn ? 0.5 : 0, transition: "opacity 0.3s ease 0.7s" }}
+          />
+          <circle cx="140" cy="12" r="1.5" fill={color} opacity="0.5"
+            style={{ opacity: drawn ? 0.5 : 0, transition: "opacity 0.3s ease 0.7s" }}
+          />
 
           {/* Right chevrons */}
-          <path d="M168 6 L160 12 L168 18" stroke={color} strokeWidth="0.75" fill="none" />
-          <path d="M176 6 L168 12 L176 18" stroke={color} strokeWidth="0.75" fill="none" />
-          {/* Right arm */}
-          <line x1="160" y1="12" x2="240" y2="12" stroke={color} strokeWidth="0.75" />
+          <path
+            d="M168 6 L160 12 L168 18"
+            stroke={color} strokeWidth="0.75" fill="none"
+            className={`motif-draw${drawn ? " animate" : ""}`}
+            style={{ "--dash-len": "20", animationDelay: "0.78s" } as CSSProperties}
+          />
+          <path
+            d="M176 6 L168 12 L176 18"
+            stroke={color} strokeWidth="0.75" fill="none"
+            className={`motif-draw${drawn ? " animate" : ""}`}
+            style={{ "--dash-len": "20", animationDelay: "0.9s" } as CSSProperties}
+          />
+          {/* Right arm — draws left to right from center-out feel */}
+          <line
+            x1="160" y1="12" x2="240" y2="12"
+            stroke={color} strokeWidth="0.75"
+            className={`motif-draw${drawn ? " animate" : ""}`}
+            style={{ "--dash-len": "80", animationDelay: "1.05s" } as CSSProperties}
+          />
         </svg>
       </div>
     );

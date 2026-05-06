@@ -218,9 +218,13 @@ export function Projects() {
         <p className="mb-1 section-eyebrow text-[9px]">
           {language === "en" ? item.category : item.categoryId}
         </p>
-        <h3 className="font-serif text-lg italic text-foreground leading-snug mb-3">
+        <h3 className="font-serif text-lg italic text-foreground leading-snug mb-1.5">
           {language === "en" ? item.title : item.titleId}
         </h3>
+        {/* Short description — meaning */}
+        <p className="text-[9px] font-light text-muted-foreground mb-2.5 line-clamp-1 tracking-[0.04em] opacity-80">
+          {language === "en" ? item.meaning : item.meaningId}
+        </p>
         <div className="overflow-hidden h-4">
           <span className="flex items-center gap-2 text-[9px] tracking-[0.25em] uppercase text-accent translate-y-5 group-hover:translate-y-0 transition-transform duration-400">
             VIEW STORY <span className="group-hover:translate-x-1 transition-transform duration-300">→</span>
@@ -248,8 +252,9 @@ export function Projects() {
               <p className="section-eyebrow mb-3">
                 {t?.nav?.work ?? "Selected Works"}
               </p>
+              <div className="h-px w-16 bg-accent mb-5" style={{ transformOrigin: "left" }} />
               <h2 className="font-serif text-5xl lg:text-6xl italic text-foreground">
-                {language === "en" ? "Our Masterpieces" : "Karya Terbaik Kami"}
+                {language === "en" ? "The Sacred Works" : "Karya Sakral"}
               </h2>
             </div>
 
@@ -284,8 +289,9 @@ export function Projects() {
               <p className="section-eyebrow mb-3">
                 {t?.nav?.work ?? "Selected Works"}
               </p>
+              <div className="h-px w-16 bg-accent mb-5" style={{ transformOrigin: "left" }} />
               <h2 className="font-serif text-4xl italic text-foreground">
-                {language === "en" ? "Our Masterpieces" : "Karya Terbaik Kami"}
+                {language === "en" ? "The Sacred Works" : "Karya Sakral"}
               </h2>
             </div>
 
@@ -321,9 +327,12 @@ export function Projects() {
                     <p className="mb-1 section-eyebrow text-[9px]">
                       {language === "en" ? item.category : item.categoryId}
                     </p>
-                    <h3 className="font-serif text-2xl italic text-foreground">
+                    <h3 className="font-serif text-2xl italic text-foreground mb-1">
                       {language === "en" ? item.title : item.titleId}
                     </h3>
+                    <p className="text-[9px] font-light text-muted-foreground line-clamp-1 tracking-[0.04em] opacity-75">
+                      {language === "en" ? item.meaning : item.meaningId}
+                    </p>
                   </div>
                   <div
                     className="flex-shrink-0 ml-4 btn-gold-sweep px-4 py-2 text-[9px] tracking-widest"
@@ -498,7 +507,13 @@ export function Projects() {
                     </div>
 
                     {/* Book CTA */}
-                    <button className="info-line btn-gold-sweep flex items-center gap-3 px-6 py-2.5 text-[10px] tracking-[0.2em] uppercase">
+                    <button
+                      className="info-line btn-gold-sweep flex items-center gap-3 px-6 py-2.5 text-[10px] tracking-[0.2em] uppercase"
+                      onClick={() => {
+                        closeModal();
+                        setTimeout(() => document.querySelector("#book")?.scrollIntoView({ behavior: "smooth" }), 400);
+                      }}
+                    >
                       <span className="flex items-center gap-2">
                         {t.gallery.bookSimilar}
                         <span>→</span>

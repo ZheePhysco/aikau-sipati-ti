@@ -260,56 +260,59 @@ export function TattooVisual({
       </svg>
     ),
 
-    mandala: (
-      <svg viewBox="0 0 400 400" className={className} style={{ opacity }} fill="none" xmlns="http://www.w3.org/2000/svg">
-        <g stroke="currentColor" strokeWidth="0.5">
-          {[30, 55, 80, 110, 140, 170, 190].map((r) => (
-            <circle key={r} cx="200" cy="200" r={r} />
-          ))}
-          {Array.from({ length: 24 }).map((_, i) => {
-            const angle = (i * 15 * Math.PI) / 180;
-            return (
-              <line
-                key={i}
-                x1={200 + Math.cos(angle) * 30}
-                y1={200 + Math.sin(angle) * 30}
-                x2={200 + Math.cos(angle) * 190}
-                y2={200 + Math.sin(angle) * 190}
-                strokeWidth="0.35"
-              />
-            );
-          })}
-          {Array.from({ length: 12 }).map((_, i) => {
-            const angle = (i * 30 * Math.PI) / 180;
-            const x = 200 + Math.cos(angle) * 120;
-            const y = 200 + Math.sin(angle) * 120;
-            return (
-              <g key={i}>
-                <circle cx={x} cy={y} r="14" />
-                <circle cx={x} cy={y} r="5" fill="currentColor" />
-              </g>
-            );
-          })}
-          {/* Chevron ring */}
-          {Array.from({ length: 24 }).map((_, i) => {
-            const angle = (i * 15 * Math.PI) / 180;
-            const r1 = 62, r2 = 75;
-            const x1 = 200 + Math.cos(angle) * r1;
-            const y1 = 200 + Math.sin(angle) * r1;
-            const x2 = 200 + Math.cos(angle + 0.13) * r2;
-            const y2 = 200 + Math.sin(angle + 0.13) * r2;
-            const x3 = 200 + Math.cos(angle + 0.26) * r1;
-            const y3 = 200 + Math.sin(angle + 0.26) * r1;
-            return (
-              <path key={i} d={`M${x1} ${y1} L${x2} ${y2} L${x3} ${y3}`} strokeWidth="0.5" fill="none" />
-            );
-          })}
-          <circle cx="200" cy="200" r="22" fill="currentColor" />
-          <circle cx="200" cy="200" r="12" fill="var(--background)" />
-          <circle cx="200" cy="200" r="5" fill="currentColor" />
-        </g>
-      </svg>
-    ),
+    mandala: (() => {
+      const n = (v: number) => +v.toFixed(4);
+      return (
+        <svg viewBox="0 0 400 400" className={className} style={{ opacity }} fill="none" xmlns="http://www.w3.org/2000/svg">
+          <g stroke="currentColor" strokeWidth="0.5">
+            {[30, 55, 80, 110, 140, 170, 190].map((r) => (
+              <circle key={r} cx="200" cy="200" r={r} />
+            ))}
+            {Array.from({ length: 24 }).map((_, i) => {
+              const angle = (i * 15 * Math.PI) / 180;
+              return (
+                <line
+                  key={i}
+                  x1={n(200 + Math.cos(angle) * 30)}
+                  y1={n(200 + Math.sin(angle) * 30)}
+                  x2={n(200 + Math.cos(angle) * 190)}
+                  y2={n(200 + Math.sin(angle) * 190)}
+                  strokeWidth="0.35"
+                />
+              );
+            })}
+            {Array.from({ length: 12 }).map((_, i) => {
+              const angle = (i * 30 * Math.PI) / 180;
+              const x = n(200 + Math.cos(angle) * 120);
+              const y = n(200 + Math.sin(angle) * 120);
+              return (
+                <g key={i}>
+                  <circle cx={x} cy={y} r="14" />
+                  <circle cx={x} cy={y} r="5" fill="currentColor" />
+                </g>
+              );
+            })}
+            {/* Chevron ring */}
+            {Array.from({ length: 24 }).map((_, i) => {
+              const angle = (i * 15 * Math.PI) / 180;
+              const r1 = 62, r2 = 75;
+              const x1 = n(200 + Math.cos(angle) * r1);
+              const y1 = n(200 + Math.sin(angle) * r1);
+              const x2 = n(200 + Math.cos(angle + 0.13) * r2);
+              const y2 = n(200 + Math.sin(angle + 0.13) * r2);
+              const x3 = n(200 + Math.cos(angle + 0.26) * r1);
+              const y3 = n(200 + Math.sin(angle + 0.26) * r1);
+              return (
+                <path key={i} d={`M${x1} ${y1} L${x2} ${y2} L${x3} ${y3}`} strokeWidth="0.5" fill="none" />
+              );
+            })}
+            <circle cx="200" cy="200" r="22" fill="currentColor" />
+            <circle cx="200" cy="200" r="12" fill="var(--background)" />
+            <circle cx="200" cy="200" r="5" fill="currentColor" />
+          </g>
+        </svg>
+      );
+    })(),
   };
 
   return <>{patterns[variant]}</>;

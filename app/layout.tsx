@@ -53,7 +53,7 @@ export const metadata: Metadata = {
     type: "website",
     images: [
       {
-        url: `${SITE_URL}/images/hero/bg.png`,
+        url: `${SITE_URL}/images/hero/bg.jpeg`,
         width: 1200,
         height: 630,
         alt: "Siolaakenen Muti'ti — Traditional Mentawai Hand Tapping Tattoo",
@@ -65,7 +65,7 @@ export const metadata: Metadata = {
     title: "Siolaakenen Muti'ti — Traditional Mentawai Hand Tapping",
     description:
       "Sacred Mentawai hand-tapping tattoo. Rooted in Sikerei shaman lineage. Padang, West Sumatra.",
-    images: [`${SITE_URL}/images/hero/bg.png`],
+    images: [`${SITE_URL}/images/hero/bg.jpeg`],
   },
   robots: {
     index: true,

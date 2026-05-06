@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useLanguage } from "@/components/providers/language-provider";
 import { MentawaiDivider } from "@/components/ui/mentawai-divider";
-import { MentawaiPattern } from "@/components/ui/tattoo-visual";
+import { MentawaiPattern, TattooVisual } from "@/components/ui/tattoo-visual";
 
 export function Aftercare() {
   const { t } = useLanguage();
@@ -45,6 +45,11 @@ export function Aftercare() {
       {/* Mentawai texture bg */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         <MentawaiPattern className="absolute inset-0 w-full h-full text-accent" />
+      </div>
+
+      {/* Right edge sectionBorder accent */}
+      <div className="absolute right-0 top-0 bottom-0 w-8 pointer-events-none hidden lg:block">
+        <TattooVisual variant="sectionBorder" className="w-full h-full text-accent" opacity={0.07} />
       </div>
 
       <div className="relative z-10 mx-auto max-w-7xl px-6 md:px-12 lg:px-20">

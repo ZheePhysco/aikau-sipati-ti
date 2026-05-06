@@ -79,7 +79,17 @@ export function Gallery() {
         scrollTrigger: { trigger: sectionRef.current, start: "top 72%" },
       }
     );
-  }, { scope: sectionRef });
+    gsap.fromTo(
+      ".gallery-eyebrow-line",
+      { scaleX: 0 },
+      {
+        scaleX: 1,
+        duration: 1.4,
+        ease: "power2.out",
+        scrollTrigger: { trigger: sectionRef.current, start: "top 72%" },
+      }
+    );
+  }, { scope: sectionRef, dependencies: [isLoading] });
 
   const openModal = () => {
     setIsExpanded(true);
@@ -127,6 +137,15 @@ export function Gallery() {
       >
         <MentawaiDivider variant="band" className="absolute top-0 left-0 right-0 opacity-25" />
 
+      {/* Motif accent — top left corner */}
+      <div className="absolute top-10 left-0 w-44 h-44 md:w-64 md:h-64 pointer-events-none">
+        <TattooVisual
+          variant="hookSpiral"
+          className="w-full h-full text-accent"
+          opacity={0.055}
+        />
+      </div>
+
         <div className="mx-auto max-w-7xl px-6 md:px-12 lg:px-20">
 
           {/* Header */}
@@ -135,6 +154,10 @@ export function Gallery() {
               <p className="section-eyebrow mb-4">
                 {t?.nav?.gallery ?? "Gallery"}
               </p>
+              <div
+                className="gallery-eyebrow-line h-px w-16 bg-accent mb-6"
+                style={{ transformOrigin: "left" }}
+              />
               <h2
                 className="gallery-title font-serif text-4xl italic text-foreground md:text-5xl"
                 style={{ clipPath: "inset(100% 0 0 0)" }}
@@ -147,8 +170,11 @@ export function Gallery() {
           {/* Grid — sharp, no rounded corners */}
           <div ref={gridRef} className="grid grid-cols-1 md:grid-cols-3 gap-2">
             {isLoading ? (
-              <div className="col-span-full text-center text-muted-foreground py-16 section-eyebrow">
-                Loading...
+              <div className="col-span-full flex flex-col items-center justify-center py-20 gap-5">
+                <TattooVisual variant="mandala" className="w-14 h-14 text-accent" opacity={0.3} />
+                <p className="section-eyebrow text-[9px] tracking-[0.3em] animate-pulse">
+                  {language === "en" ? "Unveiling the marks…" : "Membuka tanda…"}
+                </p>
               </div>
             ) : initialPhotos.length === 0 ? (
               <div className="col-span-full text-center text-muted-foreground py-16">

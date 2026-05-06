@@ -22,6 +22,14 @@ export function Artist() {
     return () => observer.disconnect();
   }, []);
 
+  useEffect(() => {
+    if (!isVisible) return;
+    const frame = sectionRef.current?.querySelector('.artist-portrait-frame');
+    if (frame) {
+      setTimeout(() => frame.classList.add('revealed'), 350);
+    }
+  }, [isVisible]);
+
   const credentials = [
     { label: t.artist.heritage, value: t.artist.heritageValue },
     { label: t.artist.experience, value: t.artist.experienceValue },
@@ -57,18 +65,30 @@ export function Artist() {
       <div className="mx-auto max-w-7xl px-6 md:px-12 lg:px-20 pt-10">
 
         {/* Section eyebrow */}
-        <p className="section-eyebrow mb-16" style={fadeStyle(0)}>
+        <p className="section-eyebrow mb-4" style={fadeStyle(0)}>
           {t.artist.label}
         </p>
+
+        {/* Eyebrow divider line — consistent with all other sections */}
+        <div
+          className="h-px w-16 bg-accent mb-14"
+          style={{
+            opacity: isVisible ? 0.9 : 0,
+            transition: "opacity 0.9s cubic-bezier(0.22,1,0.36,1) 0.07s",
+          }}
+        />
 
         <div className="grid gap-14 lg:grid-cols-5 lg:gap-20">
 
           {/* Portrait — MentawaiFrame treatment */}
           <div
             className="lg:col-span-2"
-            style={fadeStyle(0.1)}
+            style={{
+              transform: isVisible ? "translateY(0)" : "translateY(32px)",
+              transition: "transform 0.9s cubic-bezier(0.22,1,0.36,1) 0.1s",
+            }}
           >
-            <MentawaiFrame variant="portrait" className="relative aspect-[3/4] overflow-hidden bg-surface">
+            <MentawaiFrame variant="portrait" className="artist-portrait-frame img-curtain-wrapper relative aspect-[3/4] overflow-hidden bg-surface">
               <SmartImage
                 src={IMAGES.artist}
                 alt="Aikau Sipati'ti"
@@ -152,6 +172,9 @@ export function Artist() {
           </div>
         </div>
       </div>
+
+      {/* Bottom ceremonial divider */}
+      <MentawaiDivider variant="band" className="absolute bottom-0 left-0 right-0 opacity-30" />
     </section>
   );
 }
