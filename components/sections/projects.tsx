@@ -3,6 +3,9 @@
 import { useState, useRef, useEffect } from "react";
 import { useLanguage } from "@/components/providers/language-provider";
 import { SmartImage } from "@/components/ui/smart-image";
+import { MentawaiFrame } from "@/components/ui/mentawai-frame";
+import { MentawaiDivider } from "@/components/ui/mentawai-divider";
+import { MentawaiPattern } from "@/components/ui/tattoo-visual";
 import { GALLERY_DATA } from "@/lib/gallery-data";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -25,99 +28,90 @@ export function Projects() {
   useEffect(() => {
     const mm = gsap.matchMedia();
 
-    // Desktop: pinned horizontal scroll clipped at max-w-7xl
-    mm.add('(min-width: 1024px)', () => {
+    mm.add("(min-width: 1024px)", () => {
       const track = cardsRef.current;
       const container = containerRef.current;
       if (!track || !container || !desktopRef.current) return;
 
       gsap.to(track, {
         x: () => -(track.scrollWidth - container.offsetWidth),
-        ease: 'none',
+        ease: "none",
         scrollTrigger: {
           trigger: desktopRef.current!,
-          start: 'top top',
+          start: "top top",
           end: () => `+=${track.scrollWidth - container.offsetWidth}`,
           scrub: 1,
           pin: true,
           anticipatePin: 1,
           invalidateOnRefresh: true,
-        }
+        },
       });
     });
 
-    // Mobile: vertical stack with IntersectionObserver slide
-    mm.add('(max-width: 1023px)', () => {
-      const cards = Array.from(
-        document.querySelectorAll('.mobile-project-card')
-      ) as HTMLElement[];
-      cards.forEach(card => {
-        card.style.opacity = '0';
-        card.style.transform = 'translateX(-40px)';
-        card.style.transition = 'opacity 0.7s cubic-bezier(0.16,1,0.3,1), transform 0.7s cubic-bezier(0.16,1,0.3,1)';
+    mm.add("(max-width: 1023px)", () => {
+      const cards = Array.from(document.querySelectorAll(".mobile-project-card")) as HTMLElement[];
+      cards.forEach((card) => {
+        card.style.opacity = "0";
+        card.style.transform = "translateX(-36px)";
+        card.style.transition = "opacity 0.8s cubic-bezier(0.22,1,0.36,1), transform 0.8s cubic-bezier(0.22,1,0.36,1)";
       });
-      const io = new IntersectionObserver(entries => {
-        entries.forEach(e => {
-          if (e.isIntersecting) {
-            const idx = parseInt((e.target as HTMLElement).getAttribute('data-index') || '0');
-            setTimeout(() => {
-              (e.target as HTMLElement).style.opacity = '1';
-              (e.target as HTMLElement).style.transform = 'translateX(0)';
-            }, idx * 90);
-            io.unobserve(e.target);
-          }
-        });
-      }, { threshold: 0.15 });
-      cards.forEach(c => io.observe(c));
+      const io = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((e) => {
+            if (e.isIntersecting) {
+              const idx = parseInt((e.target as HTMLElement).getAttribute("data-index") || "0");
+              setTimeout(() => {
+                (e.target as HTMLElement).style.opacity = "1";
+                (e.target as HTMLElement).style.transform = "translateX(0)";
+              }, idx * 80);
+              io.unobserve(e.target);
+            }
+          });
+        },
+        { threshold: 0.12 }
+      );
+      cards.forEach((c) => io.observe(c));
       return () => io.disconnect();
     });
 
     return () => mm.revert();
   }, []);
 
-
-  // Handle modal animation
   const modalRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     if (selectedItem && modalRef.current) {
       if (!isNavigating.current) {
-        // Initial open animation
         const tl = gsap.timeline();
-        tl.fromTo(modalRef.current.querySelector('.modal-backdrop'),
-          { opacity: 0 }, { opacity: 1, duration: 0.3 })
-          .fromTo(modalRef.current.querySelector('.modal-container'),
-            { scale: 0.96, y: 20, opacity: 0 }, { scale: 1, y: 0, opacity: 1, duration: 0.5, ease: "expo.out", willChange: "transform, opacity" }, "-=0.2")
-          .fromTo(modalRef.current.querySelector('.modal-left'),
-            { x: -40, opacity: 0 }, { x: 0, opacity: 1, duration: 0.6, willChange: "transform, opacity" }, "-=0.3")
-          .fromTo(modalRef.current.querySelector('.modal-right'),
-            { x: 40, opacity: 0 }, { x: 0, opacity: 1, duration: 0.6, willChange: "transform, opacity" }, "-=0.5")
-          .fromTo(modalRef.current.querySelectorAll('.info-line'),
-            { y: 16, opacity: 0 }, { y: 0, opacity: 1, stagger: 0.05, duration: 0.4, willChange: "transform, opacity" }, "-=0.4");
+        tl.fromTo(modalRef.current.querySelector(".modal-backdrop"), { opacity: 0 }, { opacity: 1, duration: 0.4 })
+          .fromTo(
+            modalRef.current.querySelector(".modal-container"),
+            { scale: 0.97, y: 18, opacity: 0 },
+            { scale: 1, y: 0, opacity: 1, duration: 0.6, ease: "expo.out" },
+            "-=0.2"
+          )
+          .fromTo(modalRef.current.querySelector(".modal-left"), { x: -36, opacity: 0 }, { x: 0, opacity: 1, duration: 0.7 }, "-=0.4")
+          .fromTo(modalRef.current.querySelector(".modal-right"), { x: 36, opacity: 0 }, { x: 0, opacity: 1, duration: 0.7 }, "-=0.6")
+          .fromTo(
+            modalRef.current.querySelectorAll(".info-line"),
+            { y: 14, opacity: 0 },
+            { y: 0, opacity: 1, stagger: 0.06, duration: 0.5 },
+            "-=0.5"
+          );
       }
       setMainImage(selectedItem.image);
     }
   }, [selectedItem]);
 
-  // Lock body scroll when modal is open
   useEffect(() => {
-    if (selectedItem) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
+    document.body.style.overflow = selectedItem ? "hidden" : "";
   }, [selectedItem]);
 
-  // Keyboard navigation
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (!selectedItem) return;
-      if (e.key === "Escape") {
-        closeModal();
-      } else if (e.key === "ArrowRight") {
-        navigateProject("next");
-      } else if (e.key === "ArrowLeft") {
-        navigateProject("prev");
-      }
+      if (e.key === "Escape") closeModal();
+      else if (e.key === "ArrowRight") navigateProject("next");
+      else if (e.key === "ArrowLeft") navigateProject("prev");
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
@@ -125,48 +119,49 @@ export function Projects() {
 
   const navigateProject = (direction: "next" | "prev") => {
     if (!selectedItem || isAnimating.current || !modalRef.current) return;
-
     isAnimating.current = true;
     isNavigating.current = true;
 
     const currentIndex = GALLERY_DATA.findIndex((item) => item.id === selectedItem.id);
-    const newIndex = direction === "next" ? (currentIndex + 1) % GALLERY_DATA.length : (currentIndex - 1 + GALLERY_DATA.length) % GALLERY_DATA.length;
-    const exitX = direction === "next" ? -40 : 40;
-    const enterX = direction === "next" ? 40 : -40;
+    const newIndex =
+      direction === "next"
+        ? (currentIndex + 1) % GALLERY_DATA.length
+        : (currentIndex - 1 + GALLERY_DATA.length) % GALLERY_DATA.length;
+    const exitX = direction === "next" ? -36 : 36;
+    const enterX = direction === "next" ? 36 : -36;
 
-    gsap.to(modalRef.current.querySelectorAll('.modal-content-area'), {
+    gsap.to(modalRef.current.querySelectorAll(".modal-content-area"), {
       x: exitX,
       opacity: 0,
-      duration: 0.25,
+      duration: 0.28,
       ease: "power2.in",
-      willChange: "transform, opacity",
       onComplete: () => {
         setSelectedItem(GALLERY_DATA[newIndex]);
-        gsap.fromTo(modalRef.current!.querySelectorAll('.modal-content-area'),
+        gsap.fromTo(
+          modalRef.current!.querySelectorAll(".modal-content-area"),
           { x: enterX, opacity: 0 },
           {
             x: 0,
             opacity: 1,
-            duration: 0.45,
-            delay: 0.1,
+            duration: 0.5,
+            delay: 0.08,
             ease: "power3.out",
-            willChange: "transform, opacity",
             onComplete: () => {
               isAnimating.current = false;
               isNavigating.current = false;
-            }
+            },
           }
         );
-      }
+      },
     });
   };
 
   const closeModal = () => {
     if (modalRef.current) {
       const tl = gsap.timeline({ onComplete: () => setSelectedItem(null) });
-      tl.to(modalRef.current.querySelectorAll('.info-line, .modal-left, .modal-right'), { opacity: 0, duration: 0.2 })
-        .to(modalRef.current.querySelector('.modal-container'), { scale: 0.96, opacity: 0, duration: 0.3 }, "-=0.1")
-        .to(modalRef.current.querySelector('.modal-backdrop'), { opacity: 0, duration: 0.3 }, "-=0.2");
+      tl.to(modalRef.current.querySelectorAll(".info-line, .modal-left, .modal-right"), { opacity: 0, duration: 0.22 })
+        .to(modalRef.current.querySelector(".modal-container"), { scale: 0.97, opacity: 0, duration: 0.35 }, "-=0.1")
+        .to(modalRef.current.querySelector(".modal-backdrop"), { opacity: 0, duration: 0.3 }, "-=0.2");
     } else {
       setSelectedItem(null);
     }
@@ -178,6 +173,7 @@ export function Projects() {
     setSelectedItem(item);
   };
 
+  /* ── Card content (shared desktop/mobile) ── */
   const CardContent = ({ item, index }: { item: typeof GALLERY_DATA[0]; index: number }) => (
     <>
       <SmartImage
@@ -185,26 +181,57 @@ export function Projects() {
         alt={item.title}
         fill
         fallbackPattern={item.fallbackPattern}
-        className="object-cover photo-cinematic transition-transform duration-700 ease-out group-hover:scale-[1.03]"
+        className="object-cover transition-transform duration-[900ms] ease-out group-hover:scale-[1.04]"
+        style={{ filter: "brightness(0.82) contrast(1.08) saturate(0.75)" }}
         priority={index < 2}
       />
-      <div className="absolute inset-0 bg-gradient-to-t from-[rgba(8,7,5,0.92)] via-[rgba(8,7,5,0.2)] to-transparent" />
-      <div className="absolute inset-0 border border-transparent group-hover:border-[rgba(196,163,90,0.4)] transition-colors duration-500" />
-      <div className="absolute top-3 right-3 w-5 h-5 border-t border-r border-[rgba(196,163,90,0)] group-hover:border-[rgba(196,163,90,0.6)] transition-all duration-500" />
-      <div className="absolute inset-x-0 bottom-0 p-5">
-        <p className="mb-1 text-[9px] font-medium uppercase tracking-[0.3em] text-accent">
+      {/* Gradient */}
+      <div className="absolute inset-0 bg-gradient-to-t from-[rgba(13,12,10,0.95)] via-[rgba(13,12,10,0.18)] to-transparent" />
+
+      {/* Gold curtain hover overlay */}
+      <div
+        className="absolute inset-0 transition-opacity duration-[600ms]"
+        style={{
+          background: "linear-gradient(to bottom, transparent 40%, rgba(196,162,78,0.14) 100%)",
+          opacity: 0,
+        }}
+        onMouseEnter={(e) => (e.currentTarget.style.opacity = "1")}
+        onMouseLeave={(e) => (e.currentTarget.style.opacity = "0")}
+      />
+
+      {/* Card frame — MentawaiFrame corner hooks */}
+      <svg
+        className="absolute inset-0 w-full h-full pointer-events-none"
+        viewBox="0 0 100 100"
+        preserveAspectRatio="none"
+        fill="none"
+        style={{ zIndex: 10 }}
+      >
+        <path d="M2 14 L2 2 L14 2" stroke="rgba(196,162,78,0)" strokeWidth="0.8" className="group-hover:[stroke:rgba(196,162,78,0.7)] transition-all duration-500" />
+        <path d="M86 2 L98 2 L98 14" stroke="rgba(196,162,78,0)" strokeWidth="0.8" className="group-hover:[stroke:rgba(196,162,78,0.7)] transition-all duration-500" />
+        <path d="M2 86 L2 98 L14 98" stroke="rgba(196,162,78,0)" strokeWidth="0.8" className="group-hover:[stroke:rgba(196,162,78,0.7)] transition-all duration-500" />
+        <path d="M86 98 L98 98 L98 86" stroke="rgba(196,162,78,0)" strokeWidth="0.8" className="group-hover:[stroke:rgba(196,162,78,0.7)] transition-all duration-500" />
+      </svg>
+
+      {/* Info */}
+      <div className="absolute inset-x-0 bottom-0 z-20 p-5">
+        <p className="mb-1 section-eyebrow text-[9px]">
           {language === "en" ? item.category : item.categoryId}
         </p>
-        <h3 className="font-serif text-lg md:text-xl italic text-foreground leading-snug mb-3">
+        <h3 className="font-serif text-lg italic text-foreground leading-snug mb-3">
           {language === "en" ? item.title : item.titleId}
         </h3>
         <div className="overflow-hidden h-4">
-          <span className="flex items-center gap-2 text-[9px] tracking-[0.25em] uppercase text-accent translate-y-5 group-hover:translate-y-0 transition-transform duration-300">
+          <span className="flex items-center gap-2 text-[9px] tracking-[0.25em] uppercase text-accent translate-y-5 group-hover:translate-y-0 transition-transform duration-400">
             VIEW STORY <span className="group-hover:translate-x-1 transition-transform duration-300">→</span>
           </span>
         </div>
       </div>
-      <div className="absolute top-4 left-4 font-serif text-[11px] text-accent/35 tracking-widest select-none">0{index + 1}</div>
+
+      {/* Index number */}
+      <div className="absolute top-4 left-4 z-20 font-serif text-[11px] text-accent/30 tracking-widest select-none">
+        0{index + 1}
+      </div>
     </>
   );
 
@@ -212,34 +239,33 @@ export function Projects() {
     <>
       <section ref={sectionRef} id="project" className="bg-background">
 
-        {/* ── DESKTOP: pinned horizontal scroll ─────────────────── */}
-        <div ref={desktopRef} className="hidden lg:flex flex-col" style={{ height: '100svh' }}>
-          {/* max-w-7xl frame — matches gallery/other sections */}
+        {/* ── DESKTOP: pinned horizontal scroll ── */}
+        <div ref={desktopRef} className="hidden lg:flex flex-col" style={{ height: "100svh" }}>
           <div className="max-w-7xl mx-auto w-full h-full flex flex-col">
 
             {/* Header */}
-            <div className="flex-shrink-0 px-6 md:px-12 lg:px-20 pt-16 md:pt-20 pb-5">
-              <p className="mb-2 text-[10px] font-medium uppercase tracking-[0.25em] text-accent">
-                {t?.nav?.work || "Selected Works"}
+            <div className="flex-shrink-0 px-6 md:px-12 lg:px-20 pt-16 pb-6">
+              <p className="section-eyebrow mb-3">
+                {t?.nav?.work ?? "Selected Works"}
               </p>
               <h2 className="font-serif text-5xl lg:text-6xl italic text-foreground">
                 {language === "en" ? "Our Masterpieces" : "Karya Terbaik Kami"}
               </h2>
             </div>
 
-            {/* Track clip window — overflow hidden here */}
+            {/* Track */}
             <div ref={containerRef} className="flex-1 overflow-hidden pb-8">
               <div
                 ref={cardsRef}
-                className="flex h-full gap-5 pl-6 md:pl-12 lg:pl-20 pr-6 md:pr-12 lg:pr-20"
-                style={{ willChange: 'transform' }}
+                className="flex h-full gap-4 pl-6 md:pl-12 lg:pl-20 pr-6"
+                style={{ willChange: "transform" }}
               >
                 {GALLERY_DATA.map((item, index) => (
                   <div
                     key={item.id}
                     data-index={index}
                     className="group cursor-pointer relative flex-shrink-0 h-full overflow-hidden"
-                    style={{ aspectRatio: '3/4' }}
+                    style={{ aspectRatio: "3/4", borderRadius: 0 }}
                     onClick={() => openModal(item)}
                   >
                     <CardContent item={item} index={index} />
@@ -247,194 +273,243 @@ export function Projects() {
                 ))}
               </div>
             </div>
-
           </div>
         </div>
 
-        {/* ── MOBILE: vertical stacked with slide animation ────── */}
-        <div className="lg:hidden bg-background py-20">
+        {/* ── MOBILE: vertical stacked ── */}
+        <div className="lg:hidden py-20" style={{ background: "var(--background)" }}>
           <div className="mx-auto max-w-7xl px-6 md:px-12">
 
-            {/* Header */}
             <div className="mb-10">
-              <p className="mb-2 text-[10px] font-medium uppercase tracking-[0.25em] text-accent">
-                {t?.nav?.work || "Selected Works"}
+              <p className="section-eyebrow mb-3">
+                {t?.nav?.work ?? "Selected Works"}
               </p>
               <h2 className="font-serif text-4xl italic text-foreground">
                 {language === "en" ? "Our Masterpieces" : "Karya Terbaik Kami"}
               </h2>
             </div>
 
-            {/* Vertical cards */}
             {GALLERY_DATA.map((item, index) => (
               <div
                 key={item.id}
                 data-index={index}
-                className="mobile-project-card border-b border-[rgba(196,163,90,0.10)]"
+                className="mobile-project-card"
+                style={{ borderBottom: "1px solid rgba(196,162,78,0.10)" }}
               >
                 {/* Photo */}
-                <div className="relative w-full aspect-[4/3] overflow-hidden">
-                  <SmartImage
-                    src={item.image}
-                    alt={item.title}
-                    fill
-                    fallbackPattern={item.fallbackPattern}
-                    className="object-cover photo-cinematic"
-                    priority={index === 0}
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[rgba(8,7,5,0.8)] via-transparent to-transparent" />
+                <div className="relative w-full overflow-hidden" style={{ aspectRatio: "4/3" }}>
+                  <MentawaiFrame variant="card" className="absolute inset-0 w-full h-full">
+                    <SmartImage
+                      src={item.image}
+                      alt={item.title}
+                      fill
+                      fallbackPattern={item.fallbackPattern}
+                      className="object-cover"
+                      style={{ filter: "brightness(0.82) contrast(1.08) saturate(0.75)" }}
+                      priority={index === 0}
+                    />
+                  </MentawaiFrame>
+                  <div className="absolute inset-0 bg-gradient-to-t from-[rgba(13,12,10,0.8)] via-transparent to-transparent z-10" />
                 </div>
+
                 {/* Info row */}
                 <div
                   className="flex items-center justify-between py-5 cursor-pointer"
                   onClick={() => openModal(item)}
                 >
                   <div>
-                    <p className="mb-1 text-[9px] font-medium uppercase tracking-[0.3em] text-accent">
+                    <p className="mb-1 section-eyebrow text-[9px]">
                       {language === "en" ? item.category : item.categoryId}
                     </p>
                     <h3 className="font-serif text-2xl italic text-foreground">
                       {language === "en" ? item.title : item.titleId}
                     </h3>
                   </div>
-                  <div className="flex-shrink-0 ml-4 flex items-center gap-2 border border-[rgba(196,163,90,0.35)] px-4 py-2 text-[10px] tracking-widest text-accent">
-                    VIEW →
+                  <div
+                    className="flex-shrink-0 ml-4 btn-gold-sweep px-4 py-2 text-[9px] tracking-widest"
+                  >
+                    <span>VIEW →</span>
                   </div>
                 </div>
               </div>
             ))}
-
           </div>
         </div>
-
       </section>
 
-      {/* Modal — full screen, no margin */}
-      {selectedItem && (() => {
-        const currentIdx = GALLERY_DATA.findIndex(d => d.id === selectedItem.id);
-        return (
-          <div ref={modalRef} className="fixed inset-0 z-50">
-            <div className="modal-backdrop absolute inset-0 bg-[rgba(8,7,5,0.92)] backdrop-blur-sm" onClick={closeModal} />
+      {/* ── MODAL ── */}
+      {selectedItem &&
+        (() => {
+          const currentIdx = GALLERY_DATA.findIndex((d) => d.id === selectedItem.id);
+          return (
+            <div ref={modalRef} className="fixed inset-0 z-50">
+              <div
+                className="modal-backdrop absolute inset-0 backdrop-blur-sm"
+                style={{ background: "rgba(13,12,10,0.94)" }}
+                onClick={closeModal}
+              />
 
-            <div className="modal-container relative w-full h-full flex flex-col md:flex-row bg-background">
-
-              {/* ── IMAGE PANEL (left) ──────────────────────────── */}
-              <div className="modal-left w-full h-[48svh] md:w-[58%] md:h-full relative modal-content-area bg-[#0a0908] flex-shrink-0">
-
-                {/* Image */}
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <SmartImage
-                    src={mainImage}
-                    alt="Main Project Image"
-                    fill
-                    fallbackPattern={selectedItem.fallbackPattern}
-                    className="object-contain"
-                  />
+              <div
+                className="modal-container relative w-full h-full flex flex-col md:flex-row"
+                style={{ background: "var(--background)" }}
+              >
+                {/* Mentawai texture in modal */}
+                <div className="absolute inset-0 pointer-events-none overflow-hidden">
+                  <MentawaiPattern className="absolute inset-0 w-full h-full text-accent" />
                 </div>
 
-                {/* Bottom nav bar */}
-                <div className="absolute bottom-0 inset-x-0 flex items-center justify-between px-6 md:px-10 py-5 bg-gradient-to-t from-[rgba(8,7,5,0.85)] to-transparent z-10">
-                  <button
-                    onClick={(e) => { e.stopPropagation(); navigateProject("prev"); }}
-                    className="flex items-center gap-2 text-[10px] font-medium uppercase tracking-[0.25em] text-foreground/60 hover:text-accent transition-colors"
-                  >
-                    ← {language === "en" ? "Prev" : "Sebelum"}
-                  </button>
-
-                  {/* Progress dots */}
-                  <div className="flex items-center gap-1.5">
-                    {GALLERY_DATA.map((_, i) => (
-                      <div
-                        key={i}
-                        className={`h-0.5 rounded-full transition-all duration-300 ${i === currentIdx ? 'w-5 bg-accent' : 'w-1.5 bg-foreground/25'}`}
-                      />
-                    ))}
+                {/* ── IMAGE PANEL ── */}
+                <div
+                  className="modal-left w-full h-[48svh] md:w-[58%] md:h-full relative modal-content-area flex-shrink-0"
+                  style={{ background: "var(--natural-ink)" }}
+                >
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <SmartImage
+                      src={mainImage}
+                      alt="Main Project Image"
+                      fill
+                      fallbackPattern={selectedItem.fallbackPattern}
+                      className="object-contain"
+                    />
                   </div>
 
-                  <button
-                    onClick={(e) => { e.stopPropagation(); navigateProject("next"); }}
-                    className="flex items-center gap-2 text-[10px] font-medium uppercase tracking-[0.25em] text-foreground/60 hover:text-accent transition-colors"
-                  >
-                    {language === "en" ? "Next" : "Berikut"} →
-                  </button>
-                </div>
-
-                {/* Thumbnails (above nav bar if exist) */}
-                {selectedItem.detailImages && selectedItem.detailImages.length > 0 && (
-                  <div className="absolute bottom-16 inset-x-0 flex justify-center gap-2 px-6 z-10 overflow-x-auto" data-lenis-prevent="true">
-                    <button onClick={() => setMainImage(selectedItem.image)} className={`relative w-12 h-12 shrink-0 border ${mainImage === selectedItem.image ? 'border-accent' : 'border-transparent opacity-40 hover:opacity-80'} transition-all`}>
-                      <SmartImage src={selectedItem.image} alt="Thumb" fill fallbackPattern={selectedItem.fallbackPattern} className="object-cover" />
+                  {/* Nav bar */}
+                  <div className="absolute bottom-0 inset-x-0 flex items-center justify-between px-6 md:px-10 py-5 bg-gradient-to-t from-[rgba(13,12,10,0.9)] to-transparent z-10">
+                    <button
+                      onClick={(e) => { e.stopPropagation(); navigateProject("prev"); }}
+                      className="text-[10px] font-light uppercase tracking-[0.25em] text-foreground/50 hover:text-accent transition-colors duration-400"
+                    >
+                      ← {language === "en" ? "Prev" : "Sebelum"}
                     </button>
-                    {selectedItem.detailImages.map((img, i) => (
-                      <button key={i} onClick={() => setMainImage(img)} className={`relative w-12 h-12 shrink-0 border ${mainImage === img ? 'border-accent' : 'border-transparent opacity-40 hover:opacity-80'} transition-all`}>
-                        <SmartImage src={img} alt={`Thumb ${i + 1}`} fill fallbackPattern={selectedItem.fallbackPattern} className="object-cover" />
+
+                    {/* Progress dots */}
+                    <div className="flex items-center gap-1.5">
+                      {GALLERY_DATA.map((_, i) => (
+                        <div
+                          key={i}
+                          className="h-px rounded-full transition-all duration-400"
+                          style={{
+                            width: i === currentIdx ? 20 : 6,
+                            background: i === currentIdx ? "var(--accent)" : "rgba(240,232,213,0.22)",
+                          }}
+                        />
+                      ))}
+                    </div>
+
+                    <button
+                      onClick={(e) => { e.stopPropagation(); navigateProject("next"); }}
+                      className="text-[10px] font-light uppercase tracking-[0.25em] text-foreground/50 hover:text-accent transition-colors duration-400"
+                    >
+                      {language === "en" ? "Next" : "Berikut"} →
+                    </button>
+                  </div>
+
+                  {/* Thumbnails */}
+                  {selectedItem.detailImages && selectedItem.detailImages.length > 0 && (
+                    <div
+                      className="absolute bottom-16 inset-x-0 flex justify-center gap-2 px-6 z-10 overflow-x-auto"
+                      data-lenis-prevent="true"
+                    >
+                      <button
+                        onClick={() => setMainImage(selectedItem.image)}
+                        className="relative w-12 h-12 shrink-0 transition-all duration-300"
+                        style={{ border: `1px solid ${mainImage === selectedItem.image ? "var(--accent)" : "transparent"}`, opacity: mainImage === selectedItem.image ? 1 : 0.4 }}
+                      >
+                        <SmartImage src={selectedItem.image} alt="Thumb" fill fallbackPattern={selectedItem.fallbackPattern} className="object-cover" />
                       </button>
-                    ))}
-                  </div>
-                )}
-              </div>
+                      {selectedItem.detailImages.map((img, i) => (
+                        <button
+                          key={i}
+                          onClick={() => setMainImage(img)}
+                          className="relative w-12 h-12 shrink-0 transition-all duration-300"
+                          style={{ border: `1px solid ${mainImage === img ? "var(--accent)" : "transparent"}`, opacity: mainImage === img ? 1 : 0.4 }}
+                        >
+                          <SmartImage src={img} alt={`Thumb ${i + 1}`} fill fallbackPattern={selectedItem.fallbackPattern} className="object-cover" />
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
 
-              {/* ── INFO PANEL (right) ──────────────────────────── */}
-              <div className="modal-right w-full flex-1 min-h-[52svh] md:flex-none md:w-[42%] md:h-full flex flex-col bg-background border-t border-[rgba(196,163,90,0.10)] md:border-t-0 md:border-l md:border-[rgba(196,163,90,0.10)] modal-content-area">
-
-                {/* Header bar: category + close */}
-                <div className="flex-shrink-0 flex items-center justify-between px-6 md:px-10 py-4 border-b border-[rgba(196,163,90,0.08)]">
-                  <p className="info-line text-[10px] font-medium uppercase tracking-[0.3em] text-accent">
-                    {language === "en" ? selectedItem.category : selectedItem.categoryId}
-                  </p>
-                  <button
-                    onClick={closeModal}
-                    className="w-8 h-8 flex items-center justify-center border border-[rgba(196,163,90,0.2)] text-foreground/50 hover:bg-accent hover:text-background hover:border-accent transition-all text-sm"
+                {/* ── INFO PANEL ── */}
+                <div
+                  className="modal-right w-full flex-1 min-h-[52svh] md:flex-none md:w-[42%] md:h-full flex flex-col relative modal-content-area"
+                  style={{
+                    background: "var(--background)",
+                    borderTop: "1px solid rgba(196,162,78,0.10)",
+                  }}
+                >
+                  {/* Header bar */}
+                  <div
+                    className="flex-shrink-0 flex items-center justify-between px-6 md:px-10 py-4"
+                    style={{ borderBottom: "1px solid rgba(196,162,78,0.10)" }}
                   >
-                    ✕
-                  </button>
-                </div>
-
-                {/* Scrollable info content */}
-                <div className="flex-1 overflow-y-auto px-6 md:px-10 py-8 md:py-10" data-lenis-prevent="true">
-                  <h2 className="info-line mb-8 font-serif text-3xl md:text-4xl italic text-foreground leading-tight">
-                    {language === "en" ? selectedItem.title : selectedItem.titleId}
-                  </h2>
-
-                  <div className="info-line mb-8 border-y border-[rgba(196,163,90,0.12)] py-6 space-y-4">
-                    <div className="grid grid-cols-[90px_1fr] gap-4">
-                      <span className="text-xs text-muted-foreground uppercase tracking-wide">{t.gallery.meaning}</span>
-                      <span className="text-sm text-foreground">{language === "en" ? selectedItem.meaning : selectedItem.meaningId}</span>
-                    </div>
-                    <div className="grid grid-cols-[90px_1fr] gap-4">
-                      <span className="text-xs text-muted-foreground uppercase tracking-wide">{t.gallery.processLabel}</span>
-                      <span className="text-sm text-foreground">{language === "en" ? "Traditional Hand Tapping" : "Pengetukan Tangan Tradisional"}</span>
-                    </div>
-                    <div className="grid grid-cols-[90px_1fr] gap-4">
-                      <span className="text-xs text-muted-foreground uppercase tracking-wide">{t.gallery.duration}</span>
-                      <span className="text-sm text-foreground">{language === "en" ? selectedItem.duration : selectedItem.durationId ?? selectedItem.duration}</span>
-                    </div>
-                    <div className="grid grid-cols-[90px_1fr] gap-4">
-                      <span className="text-xs text-muted-foreground uppercase tracking-wide">{t.gallery.placement}</span>
-                      <span className="text-sm text-foreground">{language === "en" ? selectedItem.placement : selectedItem.placementId}</span>
-                    </div>
+                    <p className="info-line section-eyebrow text-[9px]">
+                      {language === "en" ? selectedItem.category : selectedItem.categoryId}
+                    </p>
+                    <button
+                      onClick={closeModal}
+                      className="info-line w-8 h-8 flex items-center justify-center border hover:bg-accent hover:text-background transition-all duration-500 text-foreground/50"
+                      style={{ borderColor: "rgba(196,162,78,0.25)" }}
+                    >
+                      <svg viewBox="0 0 16 16" className="w-3 h-3" fill="none">
+                        <line x1="2" y1="2" x2="14" y2="14" stroke="currentColor" strokeWidth="1.2" />
+                        <line x1="14" y1="2" x2="2" y2="14" stroke="currentColor" strokeWidth="1.2" />
+                      </svg>
+                    </button>
                   </div>
 
-                  <div className="info-line mb-10">
-                    <p className="mb-3 text-[10px] font-medium uppercase tracking-[0.2em] text-muted-foreground">
-                      {t.gallery.storyBehind}
-                    </p>
-                    <p className="font-serif text-base md:text-lg italic leading-relaxed text-foreground/85">
-                      &ldquo;{language === "en" ? selectedItem.story : selectedItem.storyId}&rdquo;
-                    </p>
-                  </div>
+                  {/* Scrollable content */}
+                  <div className="flex-1 overflow-y-auto px-6 md:px-10 py-8 md:py-10" data-lenis-prevent="true">
 
-                  <button className="info-line group flex items-center gap-3 border-b border-accent pb-2 text-xs uppercase tracking-widest text-accent transition-all hover:gap-5">
-                    {t.gallery.bookSimilar}
-                    <span className="transition-transform group-hover:translate-x-1">→</span>
-                  </button>
+                    <h2 className="info-line mb-6 font-serif text-3xl md:text-4xl italic text-foreground leading-tight">
+                      {language === "en" ? selectedItem.title : selectedItem.titleId}
+                    </h2>
+
+                    {/* Ornament between title and details */}
+                    <div className="info-line mb-6">
+                      <MentawaiDivider variant="ornament" className="justify-start opacity-60" />
+                    </div>
+
+                    {/* Details table */}
+                    <div
+                      className="info-line mb-8 py-6 space-y-4"
+                      style={{ borderTop: "1px solid rgba(196,162,78,0.18)", borderBottom: "1px solid rgba(196,162,78,0.18)" }}
+                    >
+                      {[
+                        { label: t.gallery.meaning, value: language === "en" ? selectedItem.meaning : selectedItem.meaningId },
+                        { label: t.gallery.processLabel, value: language === "en" ? "Traditional Hand Tapping" : "Pengetukan Tangan Tradisional" },
+                        { label: t.gallery.duration, value: language === "en" ? selectedItem.duration : (selectedItem.durationId ?? selectedItem.duration) },
+                        { label: t.gallery.placement, value: language === "en" ? selectedItem.placement : selectedItem.placementId },
+                      ].map((row) => (
+                        <div key={row.label} className="grid grid-cols-[90px_1fr] gap-4">
+                          <span className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground">{row.label}</span>
+                          <span className="font-serif text-sm italic text-foreground">{row.value}</span>
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* Story */}
+                    <div className="info-line mb-10">
+                      <p className="mb-3 section-eyebrow text-[9px]">{t.gallery.storyBehind}</p>
+                      <p className="font-serif text-base md:text-lg italic leading-relaxed text-foreground/85">
+                        &ldquo;{language === "en" ? selectedItem.story : selectedItem.storyId}&rdquo;
+                      </p>
+                    </div>
+
+                    {/* Book CTA */}
+                    <button className="info-line btn-gold-sweep flex items-center gap-3 px-6 py-2.5 text-[10px] tracking-[0.2em] uppercase">
+                      <span className="flex items-center gap-2">
+                        {t.gallery.bookSimilar}
+                        <span>→</span>
+                      </span>
+                    </button>
+                  </div>
                 </div>
               </div>
-
             </div>
-          </div>
-        );
-      })()}
+          );
+        })()}
     </>
   );
 }

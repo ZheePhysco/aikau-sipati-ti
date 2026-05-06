@@ -2,6 +2,8 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useLanguage } from "@/components/providers/language-provider";
+import { MentawaiDivider } from "@/components/ui/mentawai-divider";
+import { MentawaiPattern } from "@/components/ui/tattoo-visual";
 
 export function Aftercare() {
   const { t } = useLanguage();
@@ -11,18 +13,10 @@ export function Aftercare() {
 
   useEffect(() => {
     const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-        }
-      },
-      { threshold: 0.2 }
+      ([entry]) => { if (entry.isIntersecting) setIsVisible(true); },
+      { threshold: 0.15 }
     );
-
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current);
-    }
-
+    if (sectionRef.current) observer.observe(sectionRef.current);
     return () => observer.disconnect();
   }, []);
 
@@ -34,88 +28,99 @@ export function Aftercare() {
     { title: t.aftercare.item5, content: t.aftercare.item5Content },
   ];
 
+  const fadeStyle = (delay = 0) => ({
+    opacity: isVisible ? 1 : 0,
+    transform: isVisible ? "translateY(0)" : "translateY(28px)",
+    transition: `opacity 0.9s cubic-bezier(0.22,1,0.36,1) ${delay}s, transform 0.9s cubic-bezier(0.22,1,0.36,1) ${delay}s`,
+  });
+
   return (
     <section
       ref={sectionRef}
-      className="bg-surface py-24 md:py-32"
+      className="relative overflow-hidden"
+      style={{ background: "var(--background)", paddingTop: "6rem", paddingBottom: "6rem" }}
     >
-      <div className="mx-auto max-w-7xl px-6 md:px-12 lg:px-20">
-        <div className="grid gap-12 lg:grid-cols-2 lg:gap-16">
-          {/* Left column - sticky */}
+      <MentawaiDivider variant="band" className="absolute top-0 left-0 right-0 opacity-25" />
+
+      {/* Mentawai texture bg */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        <MentawaiPattern className="absolute inset-0 w-full h-full text-accent" />
+      </div>
+
+      <div className="relative z-10 mx-auto max-w-7xl px-6 md:px-12 lg:px-20">
+        <div className="grid gap-14 lg:grid-cols-2 lg:gap-20">
+
+          {/* Left — sticky */}
           <div className="lg:sticky lg:top-32 lg:self-start">
-            <p
-              className="mb-4 text-xs font-medium uppercase tracking-[0.2em] text-accent"
-              style={{
-                opacity: isVisible ? 1 : 0,
-                transform: isVisible ? "translateY(0)" : "translateY(20px)",
-                transition: "all 0.6s ease",
-              }}
-            >
+            <p className="section-eyebrow mb-4" style={fadeStyle(0)}>
               {t.aftercare.label}
             </p>
             <h2
-              className="mb-6 font-serif text-3xl italic text-foreground md:text-4xl"
-              style={{
-                opacity: isVisible ? 1 : 0,
-                transform: isVisible ? "translateY(0)" : "translateY(20px)",
-                transition: "all 0.6s ease 0.1s",
-              }}
+              className="mb-6 font-serif text-3xl italic text-foreground md:text-4xl leading-tight"
+              style={fadeStyle(0.1)}
             >
               {t.aftercare.heading}
             </h2>
+
+            {/* Gold accent rule */}
+            <div
+              className="mb-6 h-px w-12 bg-accent"
+              style={{ ...fadeStyle(0.15), opacity: isVisible ? 0.7 : 0 }}
+            />
+
             <p
-              className="max-w-md font-light leading-relaxed text-muted-foreground"
-              style={{
-                opacity: isVisible ? 1 : 0,
-                transform: isVisible ? "translateY(0)" : "translateY(20px)",
-                transition: "all 0.6s ease 0.2s",
-              }}
+              className="max-w-md font-light leading-[1.9] text-muted-foreground text-[15px]"
+              style={fadeStyle(0.2)}
             >
               {t.aftercare.description}
             </p>
           </div>
 
-          {/* Right column - accordion */}
-          <div
-            className="divide-y divide-border"
-            style={{
-              opacity: isVisible ? 1 : 0,
-              transform: isVisible ? "translateY(0)" : "translateY(30px)",
-              transition: "all 0.6s ease 0.3s",
-            }}
-          >
+          {/* Right — accordion */}
+          <div style={fadeStyle(0.3)}>
             {items.map((item, index) => (
-              <div key={item.title} className="py-6">
+              <div
+                key={item.title}
+                className="border-b border-border"
+                style={{
+                  borderColor: openIndex === index
+                    ? "rgba(196,162,78,0.3)"
+                    : "rgba(196,162,78,0.10)",
+                  transition: "border-color 0.4s ease",
+                }}
+              >
                 <button
-                  onClick={() =>
-                    setOpenIndex(openIndex === index ? null : index)
-                  }
-                  className="flex w-full items-center justify-between text-left"
+                  onClick={() => setOpenIndex(openIndex === index ? null : index)}
+                  className="flex w-full items-center justify-between text-left py-6 group"
                 >
                   <span
-                    className={`text-lg transition-colors ${
+                    className={`font-serif text-lg italic transition-colors duration-400 ${
                       openIndex === index
                         ? "text-foreground"
-                        : "text-muted-foreground"
+                        : "text-muted-foreground group-hover:text-foreground"
                     }`}
                   >
                     {item.title}
                   </span>
-                  <span
-                    className={`flex h-8 w-8 items-center justify-center text-xl text-accent transition-transform duration-300 ${
+
+                  {/* SVG cross icon — rotates to × */}
+                  <svg
+                    viewBox="0 0 24 24"
+                    className={`w-6 h-6 shrink-0 ml-4 transition-transform duration-500 ${
                       openIndex === index ? "rotate-45" : ""
                     }`}
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                    style={{ color: "var(--accent)" }}
                   >
-                    +
-                  </span>
+                    <line x1="12" y1="2" x2="12" y2="22" stroke="currentColor" strokeWidth="1.2" />
+                    <line x1="2" y1="12" x2="22" y2="12" stroke="currentColor" strokeWidth="1.2" />
+                  </svg>
                 </button>
-                <div
-                  className={`accordion-content ${
-                    openIndex === index ? "open" : ""
-                  }`}
-                >
+
+                <div className={`accordion-content ${openIndex === index ? "open" : ""}`}>
                   <div>
-                    <p className="mt-4 font-light leading-relaxed text-muted-foreground">
+                    <p className="pb-6 font-light leading-[1.9] text-muted-foreground text-[15px]">
                       {item.content}
                     </p>
                   </div>
@@ -125,6 +130,8 @@ export function Aftercare() {
           </div>
         </div>
       </div>
+
+      <MentawaiDivider variant="band" className="absolute bottom-0 left-0 right-0 opacity-25" />
     </section>
   );
 }

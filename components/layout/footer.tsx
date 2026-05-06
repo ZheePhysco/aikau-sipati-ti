@@ -2,6 +2,8 @@
 
 import { BrandMark } from "@/components/ui/brand-mark";
 import { useLanguage } from "@/components/providers/language-provider";
+import { MentawaiDivider } from "@/components/ui/mentawai-divider";
+import { MentawaiPattern } from "@/components/ui/tattoo-visual";
 
 export function Footer() {
   const { t } = useLanguage();
@@ -12,13 +14,11 @@ export function Footer() {
 
   const scrollToSection = (href: string) => {
     const element = document.querySelector(href);
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth" });
-    }
+    if (element) element.scrollIntoView({ behavior: "smooth" });
   };
 
   const navLinks = [
-    { href: "#work", label: t.nav.work },
+    { href: "#project", label: t.nav.work },
     { href: "#process", label: t.nav.process },
     { href: "#artist", label: t.nav.artist },
     { href: "#book", label: t.nav.book },
@@ -37,24 +37,39 @@ export function Footer() {
   ];
 
   return (
-    <footer className="border-t border-accent/20 bg-background">
-      <div className="mx-auto max-w-7xl px-6 md:px-12 lg:px-20 py-16">
+    <footer className="relative overflow-hidden" style={{ background: "var(--background)" }}>
+
+      {/* Ceremonial top divider — replaces plain border-t */}
+      <MentawaiDivider variant="border-top" className="opacity-60" />
+
+      {/* Mentawai texture background */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        <MentawaiPattern className="absolute inset-0 w-full h-full text-accent" />
+      </div>
+
+      <div className="relative z-10 mx-auto max-w-7xl px-6 md:px-12 lg:px-20 py-16 md:py-20">
+
         {/* Top section */}
         <div className="mb-16 flex flex-col items-center text-center">
           <BrandMark size="md" />
-          <p className="mt-6 font-serif text-lg italic text-muted-foreground">
+
+          {/* Ornament divider */}
+          <MentawaiDivider variant="ornament" className="mt-8 mb-4 opacity-60" />
+
+          <p className="font-serif text-lg italic text-muted-foreground max-w-xs leading-relaxed">
             {t.footer.tagline}
           </p>
-          <p className="mt-2 text-sm tracking-wide text-muted">
+          <p className="mt-3 text-[10px] tracking-[0.28em] uppercase" style={{ color: "var(--muted)" }}>
             {t.footer.location}
           </p>
         </div>
 
         {/* Links grid */}
         <div className="mb-16 grid grid-cols-1 gap-12 md:grid-cols-3">
+
           {/* Navigation */}
           <div>
-            <h4 className="mb-6 text-xs font-medium uppercase tracking-[0.2em] text-accent">
+            <h4 className="mb-6 section-eyebrow border-b border-border pb-3">
               {t.footer.navigation}
             </h4>
             <ul className="space-y-3">
@@ -62,7 +77,7 @@ export function Footer() {
                 <li key={link.href}>
                   <button
                     onClick={() => scrollToSection(link.href)}
-                    className="text-sm font-light text-muted-foreground transition-colors hover:text-foreground"
+                    className="nav-underline text-sm font-light text-muted-foreground transition-colors duration-400 hover:text-foreground"
                   >
                     {link.label}
                   </button>
@@ -73,7 +88,7 @@ export function Footer() {
 
           {/* Contact */}
           <div>
-            <h4 className="mb-6 text-xs font-medium uppercase tracking-[0.2em] text-accent">
+            <h4 className="mb-6 section-eyebrow border-b border-border pb-3">
               {t.footer.contact}
             </h4>
             <ul className="space-y-3">
@@ -83,7 +98,7 @@ export function Footer() {
                     href={link.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-sm font-light text-muted-foreground transition-colors hover:text-foreground"
+                    className="nav-underline text-sm font-light text-muted-foreground transition-colors duration-400 hover:text-foreground"
                   >
                     {link.label}
                   </a>
@@ -94,7 +109,7 @@ export function Footer() {
 
           {/* Follow Us */}
           <div>
-            <h4 className="mb-6 text-xs font-medium uppercase tracking-[0.2em] text-accent">
+            <h4 className="mb-6 section-eyebrow border-b border-border pb-3">
               {t.footer.followUs}
             </h4>
             <ul className="space-y-3">
@@ -104,7 +119,7 @@ export function Footer() {
                     href={link.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-sm font-light text-muted-foreground transition-colors hover:text-foreground"
+                    className="nav-underline text-sm font-light text-muted-foreground transition-colors duration-400 hover:text-foreground"
                   >
                     {link.label}
                   </a>
@@ -116,12 +131,14 @@ export function Footer() {
 
         {/* Bottom bar */}
         <div className="flex flex-col items-center justify-between gap-4 border-t border-border pt-8 md:flex-row">
-          <p className="text-xs text-muted">{t.footer.copyright}</p>
+          <p className="text-[11px] tracking-wide" style={{ color: "var(--muted)" }}>
+            {t.footer.copyright}
+          </p>
           <button
             onClick={scrollToTop}
-            className="text-xs text-muted-foreground transition-colors hover:text-accent"
+            className="btn-gold-sweep px-4 py-1.5 text-[10px] tracking-[0.2em] uppercase"
           >
-            {t.footer.backToTop}
+            <span>{t.footer.backToTop}</span>
           </button>
         </div>
       </div>

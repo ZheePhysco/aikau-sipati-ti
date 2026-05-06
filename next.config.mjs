@@ -6,6 +6,9 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
+  env: {
+    NEXT_PUBLIC_SITE_URL: 'https://mentawaitatto.com',
+  },
 }
 
 export default nextConfig

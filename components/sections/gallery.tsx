@@ -3,6 +3,9 @@
 import { useRef, useState, useEffect } from "react";
 import { useLanguage } from "@/components/providers/language-provider";
 import { SmartImage } from "@/components/ui/smart-image";
+import { MentawaiFrame } from "@/components/ui/mentawai-frame";
+import { MentawaiDivider } from "@/components/ui/mentawai-divider";
+import { TattooVisual } from "@/components/ui/tattoo-visual";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
@@ -10,7 +13,6 @@ import { useGSAP } from "@gsap/react";
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
 }
-
 
 export function Gallery() {
   const { language, t } = useLanguage();
@@ -25,22 +27,20 @@ export function Gallery() {
 
   const initialPhotos = galleryPhotos.slice(0, 6);
 
-  // Fetch gallery photos dynamically from API
   useEffect(() => {
     async function fetchGallery() {
       try {
-        const res = await fetch('/api/gallery');
+        const res = await fetch("/api/gallery");
         const data = await res.json();
         if (data.images) {
           const photos = data.images.map((src: string, index: number) => ({
             id: `photo-${index}`,
             src,
-            category: index % 3 === 0 ? "Atmosphere" : (index % 2 === 0 ? "Flash" : "Recent")
+            category: index % 3 === 0 ? "Atmosphere" : index % 2 === 0 ? "Flash" : "Recent",
           }));
           setGalleryPhotos(photos);
         }
-      } catch (error) {
-        console.error('Failed to fetch gallery:', error);
+      } catch {
         setGalleryPhotos([]);
       } finally {
         setIsLoading(false);
@@ -49,26 +49,35 @@ export function Gallery() {
     fetchGallery();
   }, []);
 
-  // Lock body scroll when modal is open
   useEffect(() => {
-    if (modalMounted) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
+    document.body.style.overflow = modalMounted ? "hidden" : "";
   }, [modalMounted]);
 
   useGSAP(() => {
-    const cards = gsap.utils.toArray('.photo-card');
+    const cards = gsap.utils.toArray(".photo-card");
     if (cards.length > 0) {
-      gsap.fromTo(cards, 
-        { y: 48, opacity: 0, scale: 0.96 },
-        { y: 0, opacity: 1, scale: 1, stagger: 0.08, ease: "power2.out", scrollTrigger: { trigger: gridRef.current, start: "top 80%" } }
+      gsap.fromTo(
+        cards,
+        { y: 56, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          stagger: 0.1,
+          ease: "power3.out",
+          duration: 1.0,
+          scrollTrigger: { trigger: gridRef.current, start: "top 80%" },
+        }
       );
     }
-    gsap.fromTo('.gallery-title',
-      { clipPath: 'inset(100% 0 0 0)' },
-      { clipPath: 'inset(0% 0 0 0)', duration: 1, ease: "power3.out", scrollTrigger: { trigger: sectionRef.current, start: "top 70%" } }
+    gsap.fromTo(
+      ".gallery-title",
+      { clipPath: "inset(100% 0 0 0)" },
+      {
+        clipPath: "inset(0% 0 0 0)",
+        duration: 1.1,
+        ease: "power3.out",
+        scrollTrigger: { trigger: sectionRef.current, start: "top 72%" },
+      }
     );
   }, { scope: sectionRef });
 
@@ -80,23 +89,28 @@ export function Gallery() {
   useEffect(() => {
     if (isExpanded && modalRef.current) {
       const tl = gsap.timeline();
-      tl.fromTo(modalRef.current.querySelector('.gallery-modal-bg'), { opacity: 0 }, { opacity: 1, duration: 0.4 })
-        .fromTo(modalRef.current.querySelector('.gallery-modal-header'), { y: -20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.4 }, "-=0.2")
-        .fromTo(modalRef.current.querySelectorAll('.gallery-modal-item'), 
-          { y: 30, opacity: 0, scale: 0.98 }, 
-          { y: 0, opacity: 1, scale: 1, stagger: 0.05, duration: 0.5, ease: "power2.out" }, "-=0.2");
+      tl.fromTo(modalRef.current.querySelector(".gallery-modal-bg"), { opacity: 0 }, { opacity: 1, duration: 0.5 })
+        .fromTo(modalRef.current.querySelector(".gallery-modal-header"), { y: -24, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5 }, "-=0.25")
+        .fromTo(
+          modalRef.current.querySelectorAll(".gallery-modal-item"),
+          { y: 36, opacity: 0 },
+          { y: 0, opacity: 1, stagger: 0.06, duration: 0.6, ease: "power3.out" },
+          "-=0.3"
+        );
     }
   }, [isExpanded]);
 
   const closeModal = () => {
     if (modalRef.current) {
-      const tl = gsap.timeline({ onComplete: () => {
-        setIsExpanded(false);
-        setModalMounted(false);
-      }});
-      tl.to(modalRef.current.querySelectorAll('.gallery-modal-item'), { y: 20, opacity: 0, scale: 0.98, duration: 0.3, stagger: 0.02 })
-        .to(modalRef.current.querySelector('.gallery-modal-header'), { y: -20, opacity: 0, duration: 0.3 }, "-=0.2")
-        .to(modalRef.current.querySelector('.gallery-modal-bg'), { opacity: 0, duration: 0.4 }, "-=0.2");
+      const tl = gsap.timeline({
+        onComplete: () => {
+          setIsExpanded(false);
+          setModalMounted(false);
+        },
+      });
+      tl.to(modalRef.current.querySelectorAll(".gallery-modal-item"), { y: 20, opacity: 0, duration: 0.3, stagger: 0.02 })
+        .to(modalRef.current.querySelector(".gallery-modal-header"), { y: -20, opacity: 0, duration: 0.3 }, "-=0.2")
+        .to(modalRef.current.querySelector(".gallery-modal-bg"), { opacity: 0, duration: 0.4 }, "-=0.2");
     } else {
       setIsExpanded(false);
       setModalMounted(false);
@@ -105,102 +119,152 @@ export function Gallery() {
 
   return (
     <>
-      <section ref={sectionRef} id="gallery" className="bg-surface section-spacing border-t border-border/10">
+      <section
+        ref={sectionRef}
+        id="gallery"
+        className="relative overflow-hidden"
+        style={{ background: "var(--background)", paddingTop: "5rem", paddingBottom: "5rem" }}
+      >
+        <MentawaiDivider variant="band" className="absolute top-0 left-0 right-0 opacity-25" />
+
         <div className="mx-auto max-w-7xl px-6 md:px-12 lg:px-20">
-          <div className="mb-16 flex flex-col md:flex-row md:items-end justify-between gap-8">
+
+          {/* Header */}
+          <div className="mb-14 flex flex-col md:flex-row md:items-end justify-between gap-8">
             <div>
-              <p className="mb-4 text-xs font-medium uppercase tracking-[0.2em] text-accent">
-                {t?.nav?.gallery || "Gallery"}
+              <p className="section-eyebrow mb-4">
+                {t?.nav?.gallery ?? "Gallery"}
               </p>
-              <h2 className="gallery-title font-serif text-4xl italic text-foreground md:text-5xl" style={{ clipPath: 'inset(100% 0 0 0)' }}>
+              <h2
+                className="gallery-title font-serif text-4xl italic text-foreground md:text-5xl"
+                style={{ clipPath: "inset(100% 0 0 0)" }}
+              >
                 {language === "en" ? "Visual Diary" : "Buku Visual"}
               </h2>
             </div>
           </div>
 
-          {/* Initial Grid 2-3 Columns */}
-          <div ref={gridRef} className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-3">
+          {/* Grid — sharp, no rounded corners */}
+          <div ref={gridRef} className="grid grid-cols-1 md:grid-cols-3 gap-2">
             {isLoading ? (
-              <div className="col-span-full text-center text-muted-foreground py-12">
+              <div className="col-span-full text-center text-muted-foreground py-16 section-eyebrow">
                 Loading...
               </div>
             ) : initialPhotos.length === 0 ? (
-              <div className="col-span-full text-center text-muted-foreground py-12">
+              <div className="col-span-full text-center text-muted-foreground py-16">
                 {language === "en" ? "No photos yet" : "Belum ada foto"}
               </div>
             ) : (
               initialPhotos.map((photo) => (
-              <div
-                key={photo.id}
-                className="photo-card group relative block w-full overflow-hidden rounded-2xl border border-border/10 bg-surface/50 p-2 transition-colors hover:bg-surface shadow-lg hover:shadow-xl"
-              >
-                <div className="relative w-full overflow-hidden rounded-xl aspect-[3/4]">
-                  <SmartImage
-                    src={photo.src}
-                    alt={`Gallery Photo ${photo.id}`}
-                    fill
-                    fallbackPattern="forest"
-                    className="photo-cinematic transition-transform duration-700 group-hover:scale-105"
-                  />
-                </div>
-              </div>
-              ))
-            )}
-          </div>
-
-          <div className="mt-16 flex justify-center">
-            <button
-              onClick={openModal}
-              className="rounded-full border border-accent px-8 py-3 text-sm tracking-wide text-accent transition-colors hover:bg-accent hover:text-background"
-            >
-              {language === "en" ? "View Full Gallery" : "Lihat Semua Galeri"}
-            </button>
-          </div>
-        </div>
-      </section>
-
-      {/* Full Screen Gallery Modal */}
-      {isExpanded && (
-        <div ref={modalRef} className="fixed inset-0 z-[100] flex flex-col overflow-hidden">
-          <div className="gallery-modal-bg absolute inset-0 bg-background" />
-          
-          {/* Header Bar */}
-          <div className="gallery-modal-header flex flex-col md:flex-row items-start md:items-center justify-between gap-4 p-6 md:p-8 border-b border-border/10 bg-background/80 backdrop-blur z-10 shrink-0">
-            <h2 className="font-serif text-2xl md:text-3xl italic text-foreground">
-              {language === "en" ? "Full Visual Diary" : "Buku Visual Penuh"}
-            </h2>
-            <button 
-              onClick={closeModal} 
-              className="flex items-center gap-2 rounded-full bg-surface/80 backdrop-blur-sm px-6 py-3 text-xs md:text-sm font-medium tracking-[0.2em] uppercase text-foreground border border-border/20 transition-all hover:bg-accent hover:text-background hover:scale-105 shadow-xl"
-            >
-              <span className="text-lg leading-none">✕</span> {language === "en" ? "Back to Dashboard" : "Kembali ke Beranda"}
-            </button>
-          </div>
-          
-          {/* Scrollable Masonry Grid */}
-          <div className="flex-1 overflow-y-auto p-4 md:p-8 relative z-10" data-lenis-prevent="true">
-            <div className="columns-1 md:columns-2 lg:columns-3 gap-6 space-y-6 max-w-[1920px] mx-auto pb-24">
-              {galleryPhotos.length === 0 ? (
-                <div className="text-center text-muted-foreground py-12">
-                  {language === "en" ? "No photos yet" : "Belum ada foto"}
-                </div>
-              ) : (
-                galleryPhotos.map((photo, index) => (
                 <div
-                  key={`full-${photo.id}`}
-                  className="gallery-modal-item group relative block w-full overflow-hidden rounded-2xl border border-border/10 bg-surface/50 p-2 transition-colors hover:bg-surface"
-                  style={{ breakInside: 'avoid' }}
+                  key={photo.id}
+                  className="photo-card group relative w-full overflow-hidden bg-surface gallery-card"
+                  style={{ aspectRatio: "3/4", borderRadius: 0 }}
                 >
-                  <div className="relative w-full overflow-hidden rounded-xl aspect-[3/4]">
+                  {/* Frame treatment */}
+                  <MentawaiFrame variant="card" className="absolute inset-0 w-full h-full">
                     <SmartImage
                       src={photo.src}
                       alt={`Gallery Photo ${photo.id}`}
                       fill
                       fallbackPattern="forest"
-                      className="transition-transform duration-700 group-hover:scale-105"
+                      className="object-cover transition-transform duration-[800ms] ease-out group-hover:scale-[1.04]"
+                      style={{ filter: "brightness(0.85) contrast(1.06) saturate(0.78)" }}
                     />
+                  </MentawaiFrame>
+
+                  {/* Gold curtain overlay on hover */}
+                  <div className="gallery-hover-overlay" />
+
+                  {/* Category label — revealed on hover */}
+                  <div className="absolute bottom-0 left-0 right-0 z-20 p-5 bg-gradient-to-t from-[rgba(13,12,10,0.85)] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                    <p className="section-eyebrow text-[9px]">{photo.category}</p>
                   </div>
                 </div>
+              ))
+            )}
+          </div>
+
+          {/* View all CTA — sharp rectangle, gold sweep */}
+          <div className="mt-14 flex justify-center">
+            <button
+              onClick={openModal}
+              className="btn-gold-sweep px-10 py-3 text-[11px] tracking-[0.22em] uppercase"
+            >
+              <span>
+                {language === "en" ? "View Full Gallery" : "Lihat Semua Galeri"}
+              </span>
+            </button>
+          </div>
+        </div>
+
+        <MentawaiDivider variant="band" className="absolute bottom-0 left-0 right-0 opacity-25" />
+      </section>
+
+      {/* Full Screen Gallery Modal */}
+      {isExpanded && (
+        <div ref={modalRef} className="fixed inset-0 z-[100] flex flex-col overflow-hidden">
+          <div className="gallery-modal-bg absolute inset-0" style={{ background: "var(--background)" }} />
+
+          {/* Mandala texture in modal bg */}
+          <div className="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden" style={{ zIndex: 1 }}>
+            <TattooVisual variant="mandala" className="w-[80vw] max-w-2xl text-accent" opacity={0.04} />
+          </div>
+
+          {/* Header */}
+          <div
+            className="gallery-modal-header relative flex flex-col md:flex-row items-start md:items-center justify-between gap-4 p-6 md:p-8 shrink-0"
+            style={{ zIndex: 10, borderBottom: "1px solid rgba(196,162,78,0.12)" }}
+          >
+            <div>
+              <p className="section-eyebrow mb-1">
+                {language === "en" ? "Full Visual Diary" : "Buku Visual Penuh"}
+              </p>
+              <h2 className="font-serif text-2xl md:text-3xl italic text-foreground">
+                {language === "en" ? "All Works" : "Semua Karya"}
+              </h2>
+            </div>
+
+            <button
+              onClick={closeModal}
+              className="btn-gold-sweep flex items-center gap-3 px-6 py-2.5 text-[10px] tracking-[0.22em] uppercase"
+            >
+              <span className="flex items-center gap-2">
+                <svg viewBox="0 0 16 16" className="w-3 h-3" fill="none">
+                  <line x1="2" y1="2" x2="14" y2="14" stroke="currentColor" strokeWidth="1.2" />
+                  <line x1="14" y1="2" x2="2" y2="14" stroke="currentColor" strokeWidth="1.2" />
+                </svg>
+                {language === "en" ? "Close" : "Tutup"}
+              </span>
+            </button>
+          </div>
+
+          {/* Scrollable Masonry Grid */}
+          <div className="flex-1 overflow-y-auto p-4 md:p-6 relative" style={{ zIndex: 10 }} data-lenis-prevent="true">
+            <div className="columns-1 md:columns-2 lg:columns-3 gap-3 space-y-3 max-w-[1920px] mx-auto pb-24">
+              {galleryPhotos.length === 0 ? (
+                <div className="text-center text-muted-foreground py-12">
+                  {language === "en" ? "No photos yet" : "Belum ada foto"}
+                </div>
+              ) : (
+                galleryPhotos.map((photo) => (
+                  <div
+                    key={`full-${photo.id}`}
+                    className="gallery-modal-item group relative w-full overflow-hidden gallery-card"
+                    style={{ breakInside: "avoid", aspectRatio: "3/4", borderRadius: 0 }}
+                  >
+                    <MentawaiFrame variant="card" className="absolute inset-0 w-full h-full">
+                      <SmartImage
+                        src={photo.src}
+                        alt={`Gallery Photo ${photo.id}`}
+                        fill
+                        fallbackPattern="forest"
+                        className="object-cover transition-transform duration-[800ms] ease-out group-hover:scale-[1.04]"
+                        style={{ filter: "brightness(0.85) contrast(1.06) saturate(0.78)" }}
+                      />
+                    </MentawaiFrame>
+                    <div className="gallery-hover-overlay" />
+                  </div>
                 ))
               )}
             </div>

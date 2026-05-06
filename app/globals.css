@@ -4,46 +4,61 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  /* TITI Studio Design System */
-  --background: #080705;
-  --surface: #111009;
-  --foreground: #F0EAE0;
-  --muted-foreground: #A09880;
-  --muted: #5C5448;
-  --accent: #C4A35A;
-  --accent-light: #E8C87A;
-  --border: rgba(196, 163, 90, 0.12);
+  /* TITI Studio — Mentawai Sacred Palette */
+  --background: #0D0C0A;
+  --surface: #141210;
+  --surface-2: #1A1714;
+  --foreground: #F0E8D5;
+  --muted-foreground: #9A9080;
+  --muted: #4A4540;
+  --accent: #C4A24E;
+  --accent-light: #DDB96A;
+  --accent-dim: rgba(196, 162, 78, 0.18);
+  --blood-earth: #8B3A2A;
+  --natural-ink: #2A1F14;
+  --border: rgba(196, 162, 78, 0.10);
+  --border-strong: rgba(196, 162, 78, 0.25);
   --radius: 0px;
 
+  /* Frame treatment */
+  --frame-gap: 5px;
+  --frame-width: 1px;
+  --frame-corner: 16px;
+
   /* shadcn compatibility */
-  --card: #111009;
-  --card-foreground: #F0EAE0;
-  --popover: #111009;
-  --popover-foreground: #F0EAE0;
-  --primary: #C4A35A;
-  --primary-foreground: #080705;
-  --secondary: #111009;
-  --secondary-foreground: #F0EAE0;
+  --card: #141210;
+  --card-foreground: #F0E8D5;
+  --popover: #141210;
+  --popover-foreground: #F0E8D5;
+  --primary: #C4A24E;
+  --primary-foreground: #0D0C0A;
+  --secondary: #141210;
+  --secondary-foreground: #F0E8D5;
   --destructive: #7f1d1d;
   --destructive-foreground: #fecaca;
-  --input: #111009;
-  --ring: #C4A35A;
+  --input: #141210;
+  --ring: #C4A24E;
 }
 
 @theme inline {
-  --font-sans: "Inter", "Inter Fallback", ui-sans-serif, system-ui, sans-serif;
-  --font-serif: "Playfair Display", "Playfair Display Fallback", ui-serif, Georgia, serif;
-  --font-mono: "Geist Mono", "Geist Mono Fallback", monospace;
-  
+  --font-sans: "DM Sans", "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Cormorant Garamond", "Playfair Display", ui-serif, Georgia, serif;
+  --font-mono: "Geist Mono", monospace;
+
   --color-background: var(--background);
   --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
   --color-foreground: var(--foreground);
   --color-muted-foreground: var(--muted-foreground);
   --color-muted: var(--muted);
   --color-accent: var(--accent);
   --color-accent-light: var(--accent-light);
+  --color-accent-dim: var(--accent-dim);
   --color-border: var(--border);
-  
+  --color-border-strong: var(--border-strong);
+  --color-blood-earth: var(--blood-earth);
+  --color-natural-ink: var(--natural-ink);
+
   --color-card: var(--card);
   --color-card-foreground: var(--card-foreground);
   --color-popover: var(--popover);
@@ -56,7 +71,7 @@
   --color-destructive-foreground: var(--destructive-foreground);
   --color-input: var(--input);
   --color-ring: var(--ring);
-  
+
   --radius-sm: 0px;
   --radius-md: 0px;
   --radius-lg: 0px;
@@ -68,16 +83,24 @@
     @apply border-border outline-ring/50;
     border-radius: 0 !important;
   }
-  
+
   body {
     @apply bg-background text-foreground;
     font-weight: 300;
+    font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
+
+  h1, h2, h3, h4 {
+    font-family: var(--font-serif);
+    letter-spacing: -0.01em;
+  }
 }
 
-/* Lenis smooth scroll */
+/* ─────────────────────────────────────────────
+   Lenis Smooth Scroll
+───────────────────────────────────────────── */
 html.lenis,
 html.lenis body {
   height: auto;
@@ -95,9 +118,11 @@ html.lenis body {
   overflow: hidden;
 }
 
-/* Custom scrollbar */
+/* ─────────────────────────────────────────────
+   Scrollbar
+───────────────────────────────────────────── */
 ::-webkit-scrollbar {
-  width: 6px;
+  width: 4px;
 }
 
 ::-webkit-scrollbar-track {
@@ -105,58 +130,102 @@ html.lenis body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--accent);
+  background: rgba(196, 162, 78, 0.4);
 }
 
-/* Selection */
+/* ─────────────────────────────────────────────
+   Selection
+───────────────────────────────────────────── */
 ::selection {
-  background: var(--accent);
-  color: var(--background);
+  background: rgba(196, 162, 78, 0.35);
+  color: var(--foreground);
 }
 
-/* Hide default cursor when custom cursor is active */
+/* ─────────────────────────────────────────────
+   Custom Cursor
+───────────────────────────────────────────── */
 .custom-cursor-active,
 .custom-cursor-active * {
   cursor: none !important;
 }
 
-/* Hero background — responsive object-position */
+/* ─────────────────────────────────────────────
+   Hero responsive
+───────────────────────────────────────────── */
 @media (max-width: 767px) {
   .hero-bg {
     object-position: 55% 15% !important;
   }
 }
 
-/* Image Utilities */
+/* ─────────────────────────────────────────────
+   Image Utilities
+───────────────────────────────────────────── */
 .image-overlay {
-  background-color: rgba(8, 7, 5, 0.45);
+  background-color: rgba(13, 12, 10, 0.48);
 }
 
 .image-color-grade {
-  filter: brightness(0.75) contrast(1.1) saturate(0.85);
+  filter: brightness(0.72) contrast(1.12) saturate(0.75);
 }
 
+/* ─────────────────────────────────────────────
+   Section Spacing
+───────────────────────────────────────────── */
 .section-spacing {
-  padding-top: 4rem;
-  padding-bottom: 4rem;
+  padding-top: 5rem;
+  padding-bottom: 5rem;
+}
+
+.section-ceremonial {
+  padding-top: 6rem;
+  padding-bottom: 6rem;
 }
 
 @media (min-width: 768px) {
   .section-spacing {
-    padding-top: 6rem;
-    padding-bottom: 6rem;
+    padding-top: 8rem;
+    padding-bottom: 8rem;
+  }
+  .section-ceremonial {
+    padding-top: 10rem;
+    padding-bottom: 10rem;
   }
 }
 
-/* Gold gradient text */
+/* ─────────────────────────────────────────────
+   Gold Gradient Text
+───────────────────────────────────────────── */
 .text-gradient-gold {
-  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%);
+  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 60%, var(--accent) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
-/* Animated underline */
+/* ─────────────────────────────────────────────
+   Nav Underline Draw (left-to-right, 600ms)
+───────────────────────────────────────────── */
+.nav-underline {
+  position: relative;
+}
+
+.nav-underline::after {
+  content: "";
+  position: absolute;
+  bottom: -3px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: var(--accent);
+  transition: width 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.nav-underline:hover::after {
+  width: 100%;
+}
+
+/* Legacy alias */
 .animated-underline {
   position: relative;
 }
@@ -169,14 +238,56 @@ html.lenis body {
   width: 0;
   height: 1px;
   background: var(--accent);
-  transition: width 0.3s ease;
+  transition: width 0.6s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .animated-underline:hover::after {
   width: 100%;
 }
 
-/* Contact bar wipe effect */
+/* ─────────────────────────────────────────────
+   Button Gold Sweep (slow fill sweep, 800ms)
+───────────────────────────────────────────── */
+.btn-gold-sweep {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  transition: color 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.btn-gold-sweep::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+  z-index: 0;
+}
+
+.btn-gold-sweep:hover::before {
+  transform: scaleX(1);
+}
+
+.btn-gold-sweep:hover {
+  color: var(--background);
+}
+
+.btn-gold-sweep > * {
+  position: relative;
+  z-index: 1;
+}
+
+.btn-gold-sweep span {
+  position: relative;
+  z-index: 1;
+}
+
+/* ─────────────────────────────────────────────
+   Contact Bar Wipe Effect
+───────────────────────────────────────────── */
 .contact-bar {
   position: relative;
   overflow: hidden;
@@ -188,7 +299,7 @@ html.lenis body {
   inset: 0;
   background: var(--accent);
   transform: translateX(-100%);
-  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
   z-index: 0;
 }
 
@@ -200,31 +311,109 @@ html.lenis body {
   color: var(--background);
 }
 
-/* Gallery card hover */
-.gallery-card {
+/* ─────────────────────────────────────────────
+   Mentawai Photo Frame Treatment
+───────────────────────────────────────────── */
+.mentawai-frame {
+  position: relative;
+}
+
+.mentawai-frame::before {
+  content: "";
+  position: absolute;
+  inset: var(--frame-gap);
+  border: var(--frame-width) solid rgba(196, 162, 78, 0.35);
+  z-index: 10;
+  pointer-events: none;
+  transition: border-color 0.5s ease;
+}
+
+.mentawai-frame:hover::before {
+  border-color: rgba(196, 162, 78, 0.65);
+}
+
+/* ─────────────────────────────────────────────
+   Gold Curtain Overlay (hover reveal top-to-bottom)
+───────────────────────────────────────────── */
+.gold-curtain {
   position: relative;
   overflow: hidden;
 }
 
-.gallery-card::after {
-  content: "";
+.gold-curtain .curtain-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(to top, rgba(196, 163, 90, 0.25) 0%, transparent 60%);
+  background: linear-gradient(
+    to bottom,
+    rgba(196, 162, 78, 0.0) 0%,
+    rgba(196, 162, 78, 0.18) 100%
+  );
   opacity: 0;
-  transition: opacity 0.4s ease;
+  transform: translateY(100%);
+  transition: opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+              transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  z-index: 5;
   pointer-events: none;
 }
 
-.gallery-card:hover::after {
+.gold-curtain:hover .curtain-overlay {
+  opacity: 1;
+  transform: translateY(0%);
+}
+
+/* ─────────────────────────────────────────────
+   Image Curtain Reveal (wipe left→right on viewport enter)
+───────────────────────────────────────────── */
+.img-curtain-wrapper {
+  position: relative;
+  overflow: hidden;
+}
+
+.img-curtain-wrapper::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--background);
+  transform: scaleX(1);
+  transform-origin: right center;
+  transition: transform 1.1s cubic-bezier(0.22, 1, 0.36, 1);
+  z-index: 10;
+}
+
+.img-curtain-wrapper.revealed::after {
+  transform: scaleX(0);
+}
+
+/* ─────────────────────────────────────────────
+   Gallery Card — sharp, no rounding
+───────────────────────────────────────────── */
+.gallery-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 0 !important;
+}
+
+.gallery-card .gallery-hover-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, transparent 40%, rgba(196, 162, 78, 0.22) 100%);
+  opacity: 0;
+  transition: opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  pointer-events: none;
+  z-index: 5;
+}
+
+.gallery-card:hover .gallery-hover-overlay {
   opacity: 1;
 }
 
-/* Accordion */
+/* ─────────────────────────────────────────────
+   Accordion
+───────────────────────────────────────────── */
 .accordion-content {
   display: grid;
   grid-template-rows: 0fr;
-  transition: grid-template-rows 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: grid-template-rows 0.5s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .accordion-content.open {
@@ -235,66 +424,62 @@ html.lenis body {
   overflow: hidden;
 }
 
-/* Scroll indicator bounce */
-@keyframes scrollBounce {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(8px);
-  }
+/* ─────────────────────────────────────────────
+   Scroll Indicator
+───────────────────────────────────────────── */
+@keyframes scrollDrop {
+  0%   { transform: scaleY(0); transform-origin: top; }
+  50%  { transform: scaleY(1); transform-origin: top; }
+  51%  { transform: scaleY(1); transform-origin: bottom; }
+  100% { transform: scaleY(0); transform-origin: bottom; }
 }
 
 .scroll-indicator {
-  animation: scrollBounce 2s ease-in-out infinite;
+  animation: scrollDrop 2.4s cubic-bezier(0.22, 1, 0.36, 1) infinite;
 }
 
-/* Page load curtain */
+/* ─────────────────────────────────────────────
+   Page Load Curtain
+───────────────────────────────────────────── */
 @keyframes curtainReveal {
-  from {
-    transform: scaleY(1);
-  }
-  to {
-    transform: scaleY(0);
-  }
+  from { transform: scaleY(1); }
+  to   { transform: scaleY(0); }
 }
 
 .page-curtain {
-  animation: curtainReveal 1s cubic-bezier(0.4, 0, 0.2, 1) 0.8s forwards;
+  animation: curtainReveal 1s cubic-bezier(0.76, 0, 0.24, 1) 0.8s forwards;
   transform-origin: top;
 }
 
-/* Brand mark fade in */
+/* ─────────────────────────────────────────────
+   Brand Mark Animate
+───────────────────────────────────────────── */
 @keyframes brandFadeIn {
-  0% {
-    opacity: 0;
-    transform: scale(0.8);
-  }
-  100% {
-    opacity: 1;
-    transform: scale(1);
-  }
+  0%   { opacity: 0; transform: scale(0.85); }
+  100% { opacity: 1; transform: scale(1); }
 }
 
 .brand-animate {
-  animation: brandFadeIn 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.2s both;
+  animation: brandFadeIn 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.2s both;
 }
 
-/* Stagger children animation */
+/* ─────────────────────────────────────────────
+   Stagger Children
+───────────────────────────────────────────── */
 .stagger-children > * {
   opacity: 0;
-  transform: translateY(30px);
+  transform: translateY(28px);
 }
 
 .stagger-children.animate > * {
-  animation: fadeInUp 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  animation: fadeInUp 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
 .stagger-children.animate > *:nth-child(1) { animation-delay: 0.1s; }
-.stagger-children.animate > *:nth-child(2) { animation-delay: 0.2s; }
-.stagger-children.animate > *:nth-child(3) { animation-delay: 0.3s; }
-.stagger-children.animate > *:nth-child(4) { animation-delay: 0.4s; }
-.stagger-children.animate > *:nth-child(5) { animation-delay: 0.5s; }
+.stagger-children.animate > *:nth-child(2) { animation-delay: 0.22s; }
+.stagger-children.animate > *:nth-child(3) { animation-delay: 0.34s; }
+.stagger-children.animate > *:nth-child(4) { animation-delay: 0.46s; }
+.stagger-children.animate > *:nth-child(5) { animation-delay: 0.58s; }
 
 @keyframes fadeInUp {
   to {
@@ -303,17 +488,121 @@ html.lenis body {
   }
 }
 
-/* Scale line from left */
+/* ─────────────────────────────────────────────
+   Scale Line from Left
+───────────────────────────────────────────── */
 @keyframes scaleFromLeft {
-  from {
-    transform: scaleX(0);
-  }
-  to {
-    transform: scaleX(1);
-  }
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
 }
 
 .line-animate {
   transform-origin: left;
-  animation: scaleFromLeft 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  animation: scaleFromLeft 1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+/* ─────────────────────────────────────────────
+   SVG Motif Draw (stroke-dashoffset)
+───────────────────────────────────────────── */
+@keyframes motifDraw {
+  from { stroke-dashoffset: var(--dash-len, 1000); }
+  to   { stroke-dashoffset: 0; }
+}
+
+.motif-draw {
+  stroke-dasharray: var(--dash-len, 1000);
+  stroke-dashoffset: var(--dash-len, 1000);
+}
+
+.motif-draw.animate {
+  animation: motifDraw 2.4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+/* ─────────────────────────────────────────────
+   Section Label Eyebrow
+───────────────────────────────────────────── */
+.section-eyebrow {
+  font-size: 0.65rem;
+  font-weight: 500;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-family: var(--font-sans);
+}
+
+/* ─────────────────────────────────────────────
+   Ceremonial Blockquote Glyph
+───────────────────────────────────────────── */
+.ceremonial-quote::before {
+  content: "⌃";
+  display: block;
+  font-size: 1.5rem;
+  color: var(--accent);
+  margin-bottom: 0.75rem;
+  transform: rotate(180deg);
+  opacity: 0.6;
+  font-family: var(--font-serif);
+}
+
+/* ─────────────────────────────────────────────
+   Mentawai Texture BG
+───────────────────────────────────────────── */
+.mentawai-texture-bg {
+  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%23C4A24E' stroke-width='0.4' opacity='0.04'%3E%3Ccircle cx='30' cy='30' r='1.5'/%3E%3Ccircle cx='10' cy='10' r='1'/%3E%3Ccircle cx='50' cy='10' r='1'/%3E%3Ccircle cx='10' cy='50' r='1'/%3E%3Ccircle cx='50' cy='50' r='1'/%3E%3Cline x1='0' y1='30' x2='60' y2='30'/%3E%3Cline x1='30' y1='0' x2='30' y2='60'/%3E%3C/g%3E%3C/svg%3E");
+}
+
+/* ─────────────────────────────────────────────
+   Process Step Diamond
+───────────────────────────────────────────── */
+.step-diamond {
+  width: 44px;
+  height: 44px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.step-diamond::before {
+  content: "";
+  position: absolute;
+  inset: 4px;
+  border: 1px solid var(--border-strong);
+  transform: rotate(45deg);
+  background: var(--surface);
+  transition: background 0.5s ease, border-color 0.5s ease;
+}
+
+.step-diamond.active::before {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+.step-diamond span {
+  position: relative;
+  z-index: 1;
+  font-size: 0.7rem;
+  font-weight: 500;
+  color: var(--muted-foreground);
+  transition: color 0.5s ease;
+}
+
+.step-diamond.active span {
+  color: var(--background);
+  font-weight: 600;
+}
+
+/* ─────────────────────────────────────────────
+   Booking Channel Icon Prefix
+───────────────────────────────────────────── */
+.channel-icon {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  background: var(--accent);
+  margin-right: 0.75rem;
+  flex-shrink: 0;
+  position: relative;
+  top: 1px;
 }
