@@ -95,7 +95,7 @@ export function Artist() {
                 fill
                 fallbackPattern="spirit"
                 className="object-cover"
-                style={{ filter: "brightness(0.82) contrast(1.08) saturate(0.72)" }}
+                style={{ filter: "brightness(0.78) contrast(1.10) saturate(0.68)" }}
               />
 
               {/* Name overlay */}

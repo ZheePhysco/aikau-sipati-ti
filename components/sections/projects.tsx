@@ -311,7 +311,7 @@ export function Projects() {
                       fill
                       fallbackPattern={item.fallbackPattern}
                       className="object-cover"
-                      style={{ filter: "brightness(0.82) contrast(1.08) saturate(0.75)" }}
+                      style={{ filter: "brightness(0.90) contrast(1.10) saturate(0.75)" }}
                       priority={index === 0}
                     />
                   </MentawaiFrame>

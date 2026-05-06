@@ -101,7 +101,7 @@ export function Hero() {
             noOverlay
             noGrade
             className="object-cover hero-bg"
-            style={{ objectPosition: "65% 15%", filter: "brightness(0.88) contrast(1.06) saturate(0.78)" }}
+            style={{ objectPosition: "65% 15%", filter: "brightness(0.72) contrast(1.08) saturate(0.65)" }}
           />
 
           {/* Desktop gradient — diagonal, dark left for text, reveals subject right */}

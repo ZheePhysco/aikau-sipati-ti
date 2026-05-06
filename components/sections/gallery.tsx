@@ -137,14 +137,14 @@ export function Gallery() {
       >
         <MentawaiDivider variant="band" className="absolute top-0 left-0 right-0 opacity-25" />
 
-      {/* Motif accent — top left corner */}
-      <div className="absolute top-10 left-0 w-44 h-44 md:w-64 md:h-64 pointer-events-none">
-        <TattooVisual
-          variant="hookSpiral"
-          className="w-full h-full text-accent"
-          opacity={0.055}
-        />
-      </div>
+        {/* Motif accent — top left corner */}
+        <div className="absolute top-10 left-0 w-44 h-44 md:w-64 md:h-64 pointer-events-none">
+          <TattooVisual
+            variant="hookSpiral"
+            className="w-full h-full text-accent"
+            opacity={0.055}
+          />
+        </div>
 
         <div className="mx-auto max-w-7xl px-6 md:px-12 lg:px-20">
 
@@ -286,7 +286,7 @@ export function Gallery() {
                         fill
                         fallbackPattern="forest"
                         className="object-cover transition-transform duration-[800ms] ease-out group-hover:scale-[1.04]"
-                        style={{ filter: "brightness(0.85) contrast(1.06) saturate(0.78)" }}
+                        style={{ filter: "brightness(0.85) contrast(1.06) saturate(0.80)" }}
                       />
                     </MentawaiFrame>
                     <div className="gallery-hover-overlay" />
