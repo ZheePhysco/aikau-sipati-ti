@@ -9,7 +9,6 @@ import { Artist } from "@/components/sections/artist";
 import { Aftercare } from "@/components/sections/aftercare";
 import { Booking } from "@/components/sections/booking";
 import { TestimonialSection } from "@/components/sections/TestimonialSection";
-import { Loader } from '@/components/Loader'
 export default function Home() {
   return (
     <main className="min-h-screen">
@@ -24,7 +23,6 @@ export default function Home() {
       <Aftercare />
       <Booking />
       <Footer />
-      <Loader />
     </main>
   );
 }

@@ -77,6 +77,9 @@ export const metadata: Metadata = {
     shortcut: '/favicon-32x32.png',
     apple: '/apple-touch-icon.png',
   },
+  verification: {
+    google: 'BxXDuTRJBNmEk7cdhJSOfT-CjFSCco-VjV_nEzJaA34',
+  },
 };
 
 export const viewport: Viewport = {
