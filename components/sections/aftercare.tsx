@@ -4,21 +4,13 @@ import { useEffect, useRef, useState } from "react";
 import { useLanguage } from "@/components/providers/language-provider";
 import { MentawaiDivider } from "@/components/ui/mentawai-divider";
 import { MentawaiPattern, TattooVisual } from "@/components/ui/tattoo-visual";
+import { useReveal } from "@/hooks/useReveal";
 
 export function Aftercare() {
   const { t } = useLanguage();
-  const [isVisible, setIsVisible] = useState(false);
   const [openIndex, setOpenIndex] = useState<number | null>(0);
   const sectionRef = useRef<HTMLElement>(null);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => { if (entry.isIntersecting) setIsVisible(true); },
-      { threshold: 0.15 }
-    );
-    if (sectionRef.current) observer.observe(sectionRef.current);
-    return () => observer.disconnect();
-  }, []);
+  useReveal();
 
   const items = [
     { title: t.aftercare.item1, content: t.aftercare.item1Content },
@@ -27,12 +19,6 @@ export function Aftercare() {
     { title: t.aftercare.item4, content: t.aftercare.item4Content },
     { title: t.aftercare.item5, content: t.aftercare.item5Content },
   ];
-
-  const fadeStyle = (delay = 0) => ({
-    opacity: isVisible ? 1 : 0,
-    transform: isVisible ? "translateY(0)" : "translateY(28px)",
-    transition: `opacity 0.9s cubic-bezier(0.22,1,0.36,1) ${delay}s, transform 0.9s cubic-bezier(0.22,1,0.36,1) ${delay}s`,
-  });
 
   return (
     <section
@@ -57,32 +43,29 @@ export function Aftercare() {
 
           {/* Left — sticky */}
           <div className="lg:sticky lg:top-32 lg:self-start">
-            <p className="section-eyebrow mb-4" style={fadeStyle(0)}>
+            <p className="section-eyebrow mb-4 reveal">
               {t.aftercare.label}
             </p>
             <h2
-              className="mb-6 font-serif text-3xl italic text-foreground md:text-4xl leading-tight"
-              style={fadeStyle(0.1)}
+              className="mb-6 font-serif text-3xl italic text-foreground md:text-4xl leading-tight reveal reveal-delay-1"
             >
               {t.aftercare.heading}
             </h2>
 
             {/* Gold accent rule */}
             <div
-              className="mb-6 h-px w-12 bg-accent"
-              style={{ ...fadeStyle(0.15), opacity: isVisible ? 0.7 : 0 }}
+              className="mb-6 h-px w-12 bg-accent reveal reveal-delay-1"
             />
 
             <p
-              className="max-w-md font-light leading-[1.9] text-muted-foreground text-[15px]"
-              style={fadeStyle(0.2)}
+              className="max-w-md font-light leading-[1.9] text-muted-foreground text-[15px] reveal reveal-delay-2"
             >
               {t.aftercare.description}
             </p>
           </div>
 
           {/* Right — accordion */}
-          <div style={fadeStyle(0.3)}>
+          <div className="reveal reveal-delay-3">
             {items.map((item, index) => (
               <div
                 key={item.title}

@@ -4,6 +4,7 @@ import { useRef } from "react";
 import { useLanguage } from "@/components/providers/language-provider";
 import { MentawaiDivider } from "@/components/ui/mentawai-divider";
 import { TattooVisual } from "@/components/ui/tattoo-visual";
+import { useReveal } from "@/hooks/useReveal";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
@@ -15,6 +16,7 @@ if (typeof window !== "undefined") {
 export function Philosophy() {
   const { t } = useLanguage();
   const sectionRef = useRef<HTMLElement>(null);
+  useReveal();
 
   const stats = [
     { value: t.philosophy.stat1, label: t.philosophy.stat1Label },
@@ -102,13 +104,12 @@ export function Philosophy() {
 
         {/* Section label */}
         <p
-          className="philosophy-title section-eyebrow mb-6"
-          style={{ clipPath: "inset(100% 0 0 0)" }}
+          className="philosophy-title section-eyebrow mb-6 reveal"
         >
           {t.philosophy.label}
         </p>
         <div
-          className="philosophy-divider h-px w-16 bg-accent mb-14"
+          className="philosophy-divider h-px w-16 bg-accent mb-14 reveal reveal-delay-1"
           style={{ transformOrigin: "left" }}
         />
 
@@ -116,7 +117,7 @@ export function Philosophy() {
         <div className="mb-20 grid gap-14 lg:grid-cols-2 lg:gap-20">
 
           {/* Quote */}
-          <div className="opacity-0 translate-y-9" data-animate>
+          <div className="reveal reveal-delay-1">
             <div className="ceremonial-quote">
               <blockquote className="font-serif text-3xl italic leading-snug text-foreground md:text-4xl lg:text-5xl">
                 &ldquo;{t.philosophy.quote}&rdquo;
@@ -125,7 +126,7 @@ export function Philosophy() {
           </div>
 
           {/* Text */}
-          <div className="space-y-6 opacity-0 translate-y-9" data-animate>
+          <div className="space-y-6 reveal reveal-delay-2">
             <p className="font-light leading-[1.95] text-muted-foreground text-[15px]">
               {t.philosophy.text1}
             </p>
@@ -136,7 +137,7 @@ export function Philosophy() {
         </div>
 
         {/* Chevron band separator */}
-        <div className="mb-14 opacity-0 translate-y-8" data-animate>
+        <div className="mb-14 reveal reveal-delay-3">
           <TattooVisual
             variant="bandChevron"
             className="w-full text-accent"
@@ -145,7 +146,7 @@ export function Philosophy() {
         </div>
 
         {/* Stats */}
-        <div className="philosophy-stats opacity-0 translate-y-8" data-animate>
+        <div className="philosophy-stats reveal reveal-delay-4">
           <div className="grid grid-cols-1 gap-px md:grid-cols-3" style={{ background: "rgba(196,162,78,0.12)" }}>
             {stats.map((stat) => (
               <div

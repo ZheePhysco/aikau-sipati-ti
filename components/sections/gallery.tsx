@@ -6,6 +6,7 @@ import { SmartImage } from "@/components/ui/smart-image";
 import { MentawaiFrame } from "@/components/ui/mentawai-frame";
 import { MentawaiDivider } from "@/components/ui/mentawai-divider";
 import { TattooVisual } from "@/components/ui/tattoo-visual";
+import { useReveal } from "@/hooks/useReveal";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
@@ -19,6 +20,7 @@ export function Gallery() {
   const sectionRef = useRef<HTMLElement>(null);
   const gridRef = useRef<HTMLDivElement>(null);
   const modalRef = useRef<HTMLDivElement>(null);
+  useReveal();
 
   const [galleryPhotos, setGalleryPhotos] = useState<{ id: string; src: string; category: string }[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -151,15 +153,15 @@ export function Gallery() {
           {/* Header */}
           <div className="mb-14 flex flex-col md:flex-row md:items-end justify-between gap-8">
             <div>
-              <p className="section-eyebrow mb-4">
+              <p className="section-eyebrow mb-4 reveal">
                 {t?.nav?.gallery ?? "Gallery"}
               </p>
               <div
-                className="gallery-eyebrow-line h-px w-16 bg-accent mb-6"
+                className="gallery-eyebrow-line h-px w-16 bg-accent mb-6 reveal reveal-delay-1"
                 style={{ transformOrigin: "left" }}
               />
               <h2
-                className="gallery-title font-serif text-4xl italic text-foreground md:text-5xl"
+                className="gallery-title font-serif text-4xl italic text-foreground md:text-5xl reveal reveal-delay-2"
                 style={{ clipPath: "inset(100% 0 0 0)" }}
               >
                 {language === "en" ? "Visual Diary" : "Buku Visual"}

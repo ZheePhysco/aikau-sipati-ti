@@ -7,6 +7,7 @@ import { IMAGES } from "@/lib/image-config";
 import { BrandMark } from "@/components/ui/brand-mark";
 import { TattooVisual } from "@/components/ui/tattoo-visual";
 import { MentawaiDivider } from "@/components/ui/mentawai-divider";
+import { useReveal } from "@/hooks/useReveal";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
@@ -20,6 +21,7 @@ export function Hero() {
   const [isVisible, setIsVisible] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
   const bgRef = useRef<HTMLDivElement>(null);
+  useReveal();
 
   useGSAP(() => {
     // Slow parallax — bg drifts as user scrolls down
@@ -135,13 +137,13 @@ export function Hero() {
           <div className="max-w-xl md:max-w-2xl lg:max-w-3xl">
 
             {/* Eyebrow */}
-            <p className="hero-eyebrow section-eyebrow mb-4">
+            <p className="hero-eyebrow section-eyebrow mb-4 reveal">
               {t.hero.eyebrow}
             </p>
-            <div className="divider-line h-px w-16 bg-accent mb-8" style={{ transformOrigin: "left" }} />
+            <div className="divider-line h-px w-16 bg-accent mb-8 reveal reveal-delay-1" style={{ transformOrigin: "left" }} />
 
             {/* Headline — clip-path mask wipe per line */}
-            <h1 className="mb-8">
+            <h1 className="mb-8 reveal reveal-delay-2">
               <span
                 className="hero-h1-1 block font-serif text-[11vw] font-normal leading-[0.88] text-foreground md:text-[9vw]"
                 style={{ clipPath: "inset(100% 0 0 0)" }}
@@ -163,7 +165,7 @@ export function Hero() {
             </h1>
 
             {/* Subtext */}
-            <div className="hero-subtext mb-10 max-w-md">
+            <div className="hero-subtext mb-10 max-w-md reveal reveal-delay-3">
               <p className="text-sm font-light leading-[1.9] text-muted-foreground tracking-wide">
                 {t.hero.subtext1}
                 <br />
@@ -172,7 +174,7 @@ export function Hero() {
             </div>
 
             {/* CTAs */}
-            <div className="hero-cta flex flex-wrap gap-4">
+            <div className="hero-cta flex flex-wrap gap-4 reveal reveal-delay-4">
               <button
                 onClick={() => scrollToSection("#process")}
                 className="border border-foreground/25 px-7 py-3 text-[11px] font-light tracking-[0.2em] uppercase text-foreground transition-all duration-500 hover:border-accent hover:text-accent"

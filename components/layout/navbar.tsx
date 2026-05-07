@@ -45,11 +45,10 @@ export function Navbar() {
   return (
     <>
       <nav
-        className={`fixed left-0 right-0 top-0 z-50 h-16 transition-all duration-700 ${
-          isScrolled
-            ? "border-b border-accent/10 bg-background/88 backdrop-blur-md"
-            : "bg-transparent"
-        }`}
+        className={`fixed left-0 right-0 top-0 z-50 h-16 transition-all duration-700 ${isScrolled
+          ? "border-b border-accent/10 bg-background/88 backdrop-blur-md"
+          : "bg-transparent"
+          }`}
       >
         <div className="mx-auto flex h-full max-w-7xl items-center justify-between px-6">
 
@@ -87,11 +86,10 @@ export function Navbar() {
                 <button
                   key={lang}
                   onClick={() => setLanguage(lang)}
-                  className={`relative px-3 text-[10px] tracking-[0.18em] uppercase transition-all duration-500 ${
-                    language === lang
-                      ? "bg-accent text-background font-medium"
-                      : "text-muted-foreground hover:text-foreground"
-                  }`}
+                  className={`relative px-3 text-[10px] tracking-[0.18em] uppercase transition-all duration-500 ${language === lang
+                    ? "bg-accent text-background font-medium"
+                    : "text-muted-foreground hover:text-foreground"
+                    }`}
                   style={{ height: 28, lineHeight: "28px" }}
                 >
                   {lang.toUpperCase()}
@@ -121,19 +119,16 @@ export function Navbar() {
             aria-label="Toggle menu"
           >
             <span
-              className={`h-px w-6 bg-foreground transition-all duration-400 ${
-                isMobileMenuOpen ? "translate-y-[7px] rotate-45" : ""
-              }`}
+              className={`h-px w-6 bg-foreground transition-all duration-400 ${isMobileMenuOpen ? "translate-y-[7px] rotate-45" : ""
+                }`}
             />
             <span
-              className={`h-px w-6 bg-foreground transition-opacity duration-300 ${
-                isMobileMenuOpen ? "opacity-0" : ""
-              }`}
+              className={`h-px w-6 bg-foreground transition-opacity duration-300 ${isMobileMenuOpen ? "opacity-0" : ""
+                }`}
             />
             <span
-              className={`h-px w-6 bg-foreground transition-all duration-400 ${
-                isMobileMenuOpen ? "-translate-y-[7px] -rotate-45" : ""
-              }`}
+              className={`h-px w-6 bg-foreground transition-all duration-400 ${isMobileMenuOpen ? "-translate-y-[7px] -rotate-45" : ""
+                }`}
             />
           </button>
         </div>
@@ -141,9 +136,8 @@ export function Navbar() {
 
       {/* Mobile Menu Overlay */}
       <div
-        className={`fixed inset-0 z-40 md:hidden transition-opacity duration-500 ${
-          isMobileMenuOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
-        }`}
+        className={`fixed inset-0 z-40 md:hidden transition-opacity duration-500 ${isMobileMenuOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+          }`}
         style={{ background: "var(--background)" }}
       >
         {/* Mentawai motif watermark */}
@@ -192,11 +186,10 @@ export function Navbar() {
               <button
                 key={lang}
                 onClick={() => setLanguage(lang)}
-                className={`px-5 py-2 text-sm tracking-[0.18em] uppercase transition-all duration-500 ${
-                  language === lang
-                    ? "bg-accent text-background"
-                    : "text-muted-foreground"
-                }`}
+                className={`px-5 py-2 text-sm tracking-[0.18em] uppercase transition-all duration-500 ${language === lang
+                  ? "bg-accent text-background"
+                  : "text-muted-foreground"
+                  }`}
               >
                 {lang.toUpperCase()}
               </button>

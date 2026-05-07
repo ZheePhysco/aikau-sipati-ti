@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import { useLanguage } from "@/components/providers/language-provider";
 import { MentawaiDivider } from "@/components/ui/mentawai-divider";
 import { TattooVisual } from "@/components/ui/tattoo-visual";
+import { useReveal } from "@/hooks/useReveal";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
@@ -17,6 +18,7 @@ export function Process() {
   const sectionRef = useRef<HTMLElement>(null);
   const [activeStep, setActiveStep] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
+  useReveal();
 
   const steps = [
     { number: "01", title: t.process.step1Title, description: t.process.step1Desc },
@@ -120,29 +122,30 @@ export function Process() {
           {/* Left column — sticky */}
           <div className="lg:sticky lg:top-32 lg:self-start">
             <p
-              className="process-title section-eyebrow mb-6"
-              style={{ clipPath: "inset(100% 0 0 0)" }}
+              className="process-title section-eyebrow mb-6 reveal"
             >
               {t.process.label}
             </p>
             <div
-              className="process-divider h-px w-16 bg-accent mb-12"
+              className="process-divider h-px w-16 bg-accent mb-12 reveal reveal-delay-1"
               style={{ transformOrigin: "left" }}
             />
-            <h2 className="mb-8 font-serif text-4xl italic text-foreground md:text-5xl leading-tight">
+            <h2 className="mb-8 font-serif text-4xl italic text-foreground md:text-5xl leading-tight reveal reveal-delay-2">
               {t.process.heading}
             </h2>
-            <p className="mb-10 max-w-md font-light leading-[1.9] text-muted-foreground text-[15px]">
+            <p className="mb-10 max-w-md font-light leading-[1.9] text-muted-foreground text-[15px] reveal reveal-delay-3">
               {t.process.description}
             </p>
-            <button
-              onClick={() => {
-                document.querySelector("#book")?.scrollIntoView({ behavior: "smooth" });
-              }}
-              className="btn-gold-sweep px-6 py-3 text-[11px] tracking-[0.2em] uppercase"
-            >
-              <span>{t.process.cta}</span>
-            </button>
+            <div className="reveal reveal-delay-4">
+              <button
+                onClick={() => {
+                  document.querySelector("#book")?.scrollIntoView({ behavior: "smooth" });
+                }}
+                className="btn-gold-sweep px-6 py-3 text-[11px] tracking-[0.2em] uppercase"
+              >
+                <span>{t.process.cta}</span>
+              </button>
+            </div>
           </div>
 
           {/* Right column — steps with ceremonial diamond numbers */}
@@ -156,7 +159,7 @@ export function Process() {
               {steps.map((step, index) => (
                 <div
                   key={step.number}
-                  className={`step-item relative pl-16 transition-opacity duration-700 ${
+                  className={`step-item relative pl-16 transition-opacity duration-700 reveal reveal-delay-${(index % 5) + 1} ${
                     activeStep >= index ? "opacity-100" : "opacity-25"
                   }`}
                 >

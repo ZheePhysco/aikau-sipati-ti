@@ -4,11 +4,13 @@ import { useEffect, useRef, useState } from "react";
 import { useLanguage } from "@/components/providers/language-provider";
 import { TattooVisual } from "@/components/ui/tattoo-visual";
 import { MentawaiDivider } from "@/components/ui/mentawai-divider";
+import { useReveal } from "@/hooks/useReveal";
 
 export function Booking() {
   const { t } = useLanguage();
   const [isVisible, setIsVisible] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
+  useReveal();
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -69,59 +71,34 @@ export function Booking() {
 
         {/* Label */}
         <p
-          className="section-eyebrow mb-6"
-          style={{
-            opacity: isVisible ? 1 : 0,
-            transform: isVisible ? "translateY(0)" : "translateY(18px)",
-            transition: "all 0.9s cubic-bezier(0.22,1,0.36,1)",
-          }}
+          className="section-eyebrow mb-6 reveal"
         >
           {t.booking.label}
         </p>
 
         {/* Ornament divider between label and heading */}
-        <div
-          style={{
-            opacity: isVisible ? 1 : 0,
-            transition: "opacity 0.8s ease 0.1s",
-          }}
-        >
+        <div className="reveal reveal-delay-1">
           <MentawaiDivider variant="ornament" className="mb-6 opacity-70" />
         </div>
 
         {/* Heading */}
         <h2
-          className="mx-auto mb-8 max-w-3xl font-serif italic text-foreground leading-tight"
-          style={{
-            fontSize: "clamp(2.4rem, 8vw, 6rem)",
-            opacity: isVisible ? 1 : 0,
-            transform: isVisible ? "translateY(0)" : "translateY(32px)",
-            transition: "all 0.9s cubic-bezier(0.22,1,0.36,1) 0.12s",
-          }}
+          className="mx-auto mb-8 max-w-3xl font-serif italic text-foreground leading-tight reveal reveal-delay-1"
+          style={{ fontSize: "clamp(2.4rem, 8vw, 6rem)" }}
         >
           {t.booking.heading}
         </h2>
 
         {/* Description */}
         <p
-          className="mx-auto mb-16 max-w-xl font-light leading-[1.9] text-muted-foreground text-[15px]"
-          style={{
-            opacity: isVisible ? 1 : 0,
-            transform: isVisible ? "translateY(0)" : "translateY(20px)",
-            transition: "all 0.9s cubic-bezier(0.22,1,0.36,1) 0.22s",
-          }}
+          className="mx-auto mb-16 max-w-xl font-light leading-[1.9] text-muted-foreground text-[15px] reveal reveal-delay-2"
         >
           {t.booking.description}
         </p>
 
         {/* Contact bars */}
         <div
-          className="mb-16 space-y-3"
-          style={{
-            opacity: isVisible ? 1 : 0,
-            transform: isVisible ? "translateY(0)" : "translateY(20px)",
-            transition: "all 0.9s cubic-bezier(0.22,1,0.36,1) 0.32s",
-          }}
+          className="mb-16 space-y-3 reveal reveal-delay-3"
         >
           {contactBars.map((bar, index) => (
             <a
@@ -129,13 +106,8 @@ export function Booking() {
               href={bar.href}
               target="_blank"
               rel="noopener noreferrer"
-              className="contact-bar group flex items-center justify-between border border-border px-8 py-6 text-left"
-              style={{
-                opacity: isVisible ? 1 : 0,
-                transform: isVisible ? "translateY(0)" : "translateY(10px)",
-                transition: `all 0.7s cubic-bezier(0.22,1,0.36,1) ${0.38 + index * 0.08}s`,
-                borderColor: "rgba(196,162,78,0.15)",
-              }}
+              className="contact-bar group flex items-center justify-between border border-border px-8 py-6 text-left reveal reveal-delay-4"
+              style={{ borderColor: "rgba(196,162,78,0.15)" }}
             >
               <div className="flex items-center gap-5">
                 {/* Channel symbol */}
@@ -163,11 +135,7 @@ export function Booking() {
 
         {/* Trust badges */}
         <div
-          className="flex flex-wrap items-center justify-center gap-4 md:gap-8"
-          style={{
-            opacity: isVisible ? 1 : 0,
-            transition: "opacity 0.8s ease 0.65s",
-          }}
+          className="flex flex-wrap items-center justify-center gap-4 md:gap-8 reveal reveal-delay-5"
         >
           {badges.map((badge, index) => (
             <span

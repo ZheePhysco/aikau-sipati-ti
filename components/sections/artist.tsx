@@ -7,11 +7,13 @@ import { IMAGES } from "@/lib/image-config";
 import { MentawaiFrame } from "@/components/ui/mentawai-frame";
 import { MentawaiDivider } from "@/components/ui/mentawai-divider";
 import { TattooVisual } from "@/components/ui/tattoo-visual";
+import { useReveal } from "@/hooks/useReveal";
 
 export function Artist() {
   const { t } = useLanguage();
   const [isVisible, setIsVisible] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
+  useReveal();
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -37,12 +39,6 @@ export function Artist() {
     { label: t.artist.speciality, value: t.artist.specialityValue },
   ];
 
-  const fadeStyle = (delay = 0) => ({
-    opacity: isVisible ? 1 : 0,
-    transform: isVisible ? "translateY(0)" : "translateY(28px)",
-    transition: `opacity 0.9s cubic-bezier(0.22,1,0.36,1) ${delay}s, transform 0.9s cubic-bezier(0.22,1,0.36,1) ${delay}s`,
-  });
-
   return (
     <section
       ref={sectionRef}
@@ -65,28 +61,20 @@ export function Artist() {
       <div className="mx-auto max-w-7xl px-6 md:px-12 lg:px-20 pt-10">
 
         {/* Section eyebrow */}
-        <p className="section-eyebrow mb-4" style={fadeStyle(0)}>
+        <p className="section-eyebrow mb-4 reveal">
           {t.artist.label}
         </p>
 
         {/* Eyebrow divider line — consistent with all other sections */}
         <div
-          className="h-px w-16 bg-accent mb-14"
-          style={{
-            opacity: isVisible ? 0.9 : 0,
-            transition: "opacity 0.9s cubic-bezier(0.22,1,0.36,1) 0.07s",
-          }}
+          className="h-px w-16 bg-accent mb-14 reveal reveal-delay-1"
         />
 
         <div className="grid gap-14 lg:grid-cols-5 lg:gap-20">
 
           {/* Portrait — MentawaiFrame treatment */}
           <div
-            className="lg:col-span-2"
-            style={{
-              transform: isVisible ? "translateY(0)" : "translateY(32px)",
-              transition: "transform 0.9s cubic-bezier(0.22,1,0.36,1) 0.1s",
-            }}
+            className="lg:col-span-2 reveal reveal-delay-2"
           >
             <MentawaiFrame variant="portrait" className="artist-portrait-frame img-curtain-wrapper relative aspect-[3/4] overflow-hidden bg-surface">
               <SmartImage
@@ -117,21 +105,19 @@ export function Artist() {
           {/* Content */}
           <div className="lg:col-span-3 flex flex-col justify-center">
             <h2
-              className="mb-8 font-serif text-3xl italic text-foreground md:text-4xl lg:text-5xl leading-tight"
-              style={fadeStyle(0.2)}
+              className="mb-8 font-serif text-3xl italic text-foreground md:text-4xl lg:text-5xl leading-tight reveal reveal-delay-2"
             >
               {t.artist.heading}
             </h2>
 
             {/* Ornament divider */}
-            <div style={fadeStyle(0.25)}>
+            <div className="reveal reveal-delay-3">
               <MentawaiDivider variant="ornament" className="justify-start mb-8" />
             </div>
 
             {/* Quote */}
             <blockquote
-              className="mb-10 border-l-2 border-accent pl-6"
-              style={fadeStyle(0.3)}
+              className="mb-10 border-l-2 border-accent pl-6 reveal reveal-delay-3"
             >
               <p className="font-serif text-xl italic leading-relaxed text-foreground/90">
                 &ldquo;{t.artist.quote}&rdquo;
@@ -139,7 +125,7 @@ export function Artist() {
             </blockquote>
 
             {/* Bio */}
-            <div className="mb-10 space-y-4" style={fadeStyle(0.38)}>
+            <div className="mb-10 space-y-4 reveal reveal-delay-4">
               <p className="font-light leading-[1.9] text-muted-foreground text-[15px]">
                 {t.artist.bio1}
               </p>
@@ -149,15 +135,11 @@ export function Artist() {
             </div>
 
             {/* Credentials — ceremonial layout */}
-            <div className="space-y-0" style={fadeStyle(0.46)}>
+            <div className="space-y-0 reveal reveal-delay-5">
               {credentials.map((cred, index) => (
                 <div
                   key={cred.label}
                   className="flex items-center justify-between border-t border-border py-4"
-                  style={{
-                    opacity: isVisible ? 1 : 0,
-                    transition: `opacity 0.6s ease ${0.5 + index * 0.08}s`,
-                  }}
                 >
                   <span
                     className="text-[10px] uppercase tracking-[0.22em] font-medium"

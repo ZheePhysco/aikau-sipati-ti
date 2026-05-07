@@ -7,6 +7,7 @@ import { MentawaiFrame } from "@/components/ui/mentawai-frame";
 import { MentawaiDivider } from "@/components/ui/mentawai-divider";
 import { MentawaiPattern } from "@/components/ui/tattoo-visual";
 import { GALLERY_DATA } from "@/lib/gallery-data";
+import { useReveal } from "@/hooks/useReveal";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -19,6 +20,7 @@ export function Projects() {
   const [selectedItem, setSelectedItem] = useState<typeof GALLERY_DATA[0] | null>(null);
   const [mainImage, setMainImage] = useState<string>("");
   const sectionRef = useRef<HTMLElement>(null);
+  useReveal();
   const desktopRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const cardsRef = useRef<HTMLDivElement>(null);
@@ -249,11 +251,11 @@ export function Projects() {
 
             {/* Header */}
             <div className="flex-shrink-0 px-6 md:px-12 lg:px-20 pt-16 pb-6">
-              <p className="section-eyebrow mb-3">
+              <p className="section-eyebrow mb-3 reveal">
                 {t?.nav?.work ?? "Selected Works"}
               </p>
-              <div className="h-px w-16 bg-accent mb-5" style={{ transformOrigin: "left" }} />
-              <h2 className="font-serif text-5xl lg:text-6xl italic text-foreground">
+              <div className="h-px w-16 bg-accent mb-5 reveal reveal-delay-1" style={{ transformOrigin: "left" }} />
+              <h2 className="font-serif text-5xl lg:text-6xl italic text-foreground reveal reveal-delay-2">
                 {language === "en" ? "The Sacred Works" : "Karya Sakral"}
               </h2>
             </div>
@@ -286,11 +288,11 @@ export function Projects() {
           <div className="mx-auto max-w-7xl px-6 md:px-12">
 
             <div className="mb-10">
-              <p className="section-eyebrow mb-3">
+              <p className="section-eyebrow mb-3 reveal">
                 {t?.nav?.work ?? "Selected Works"}
               </p>
-              <div className="h-px w-16 bg-accent mb-5" style={{ transformOrigin: "left" }} />
-              <h2 className="font-serif text-4xl italic text-foreground">
+              <div className="h-px w-16 bg-accent mb-5 reveal reveal-delay-1" style={{ transformOrigin: "left" }} />
+              <h2 className="font-serif text-4xl italic text-foreground reveal reveal-delay-2">
                 {language === "en" ? "The Sacred Works" : "Karya Sakral"}
               </h2>
             </div>
