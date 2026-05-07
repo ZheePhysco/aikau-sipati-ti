@@ -16,7 +16,7 @@ export const IMAGES = {
   hero: '/images/hero/bg.jpeg',
 
   // ARTIST PHOTO
-  artist: '/images/artist/edo.jpg',
+  artist: '/images/artist/edo.jpeg',
 
   // GALLERY
   gallery: [
@@ -38,6 +38,13 @@ export const IMAGES = {
     '/images/gallery/IMG_20250830_184957_362.jpg',
     '/images/gallery/motion_photo_2035101837612929098.jpg',
     '/images/gallery/motion_photo_5299152759686770160.jpg',
+    '/images/gallery/WhatsApp Image 2026-05-07 at 14.17.42.jpeg',
+    '/images/gallery/WhatsApp Image 2026-05-07 at 14.17.43 (1).jpeg',
+    '/images/gallery/WhatsApp Image 2026-05-07 at 14.17.43 (2).jpeg',
+    '/images/gallery/WhatsApp Image 2026-05-07 at 14.17.43 (2).jpeg',
+    '/images/gallery/WhatsApp Image 2026-05-07 at 14.17.44 (1).jpeg',
+    '/images/gallery/WhatsApp Image 2026-05-07 at 14.17.44.jpeg',
+    '/images/gallery/WhatsApp Image 2026-05-07 at 14.17.46.jpeg',
   ],
 
   // LOGO
