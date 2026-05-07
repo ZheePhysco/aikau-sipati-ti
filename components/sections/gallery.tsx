@@ -135,7 +135,7 @@ export function Gallery() {
         ref={sectionRef}
         id="gallery"
         className="relative overflow-hidden"
-        style={{ background: "var(--background)", paddingTop: "5rem", paddingBottom: "5rem" }}
+        style={{ background: "var(--background)", paddingTop: "8rem", paddingBottom: "8rem" }}
       >
         <MentawaiDivider variant="band" className="absolute top-0 left-0 right-0 opacity-25" />
 
@@ -170,7 +170,7 @@ export function Gallery() {
           </div>
 
           {/* Grid — sharp, no rounded corners */}
-          <div ref={gridRef} className="grid grid-cols-1 md:grid-cols-3 gap-2">
+          <div ref={gridRef} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {isLoading ? (
               <div className="col-span-full flex flex-col items-center justify-center py-20 gap-5">
                 <TattooVisual variant="mandala" className="w-14 h-14 text-accent" opacity={0.3} />
@@ -186,8 +186,10 @@ export function Gallery() {
               initialPhotos.map((photo) => (
                 <div
                   key={photo.id}
-                  className="photo-card group relative w-full overflow-hidden bg-surface gallery-card"
-                  style={{ aspectRatio: "3/4", borderRadius: 0 }}
+                  className="photo-card group relative w-full overflow-hidden bg-surface gallery-card gallery-aspect"
+                  style={{
+                    borderRadius: 0
+                  }}
                 >
                   {/* Frame treatment */}
                   <MentawaiFrame variant="card" className="absolute inset-0 w-full h-full">
@@ -197,7 +199,7 @@ export function Gallery() {
                       fill
                       fallbackPattern="forest"
                       className="object-cover transition-transform duration-[800ms] ease-out group-hover:scale-[1.04]"
-                      style={{ filter: "brightness(0.85) contrast(1.06) saturate(0.78)" }}
+                      style={{ filter: "brightness(0.82) contrast(1.08) saturate(0.75)" }}
                     />
                   </MentawaiFrame>
 
@@ -278,8 +280,8 @@ export function Gallery() {
                 galleryPhotos.map((photo) => (
                   <div
                     key={`full-${photo.id}`}
-                    className="gallery-modal-item group relative w-full overflow-hidden gallery-card"
-                    style={{ breakInside: "avoid", aspectRatio: "3/4", borderRadius: 0 }}
+                    className="gallery-modal-item group relative w-full overflow-hidden gallery-card gallery-aspect"
+                    style={{ breakInside: "avoid", borderRadius: 0 }}
                   >
                     <MentawaiFrame variant="card" className="absolute inset-0 w-full h-full">
                       <SmartImage
@@ -288,7 +290,7 @@ export function Gallery() {
                         fill
                         fallbackPattern="forest"
                         className="object-cover transition-transform duration-[800ms] ease-out group-hover:scale-[1.04]"
-                        style={{ filter: "brightness(0.85) contrast(1.06) saturate(0.80)" }}
+                        style={{ filter: "brightness(0.82) contrast(1.08) saturate(0.75)" }}
                       />
                     </MentawaiFrame>
                     <div className="gallery-hover-overlay" />

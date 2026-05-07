@@ -70,13 +70,13 @@ export function Artist() {
           className="h-px w-16 bg-accent mb-14 reveal reveal-delay-1"
         />
 
-        <div className="grid gap-14 lg:grid-cols-5 lg:gap-20">
+        <div className="grid gap-14 lg:grid-cols-2 lg:gap-20">
 
           {/* Portrait — MentawaiFrame treatment */}
           <div
-            className="lg:col-span-2 reveal reveal-delay-2"
+            className="reveal reveal-delay-2 flex flex-col"
           >
-            <MentawaiFrame variant="portrait" className="artist-portrait-frame img-curtain-wrapper relative aspect-[3/4] overflow-hidden bg-surface">
+            <MentawaiFrame variant="portrait" className="artist-portrait-frame img-curtain-wrapper relative flex-1 aspect-[3/4] lg:aspect-auto lg:h-full overflow-hidden bg-surface">
               <SmartImage
                 src={IMAGES.artist}
                 alt="Aikau Sipati'ti"
@@ -103,7 +103,7 @@ export function Artist() {
           </div>
 
           {/* Content */}
-          <div className="lg:col-span-3 flex flex-col justify-center">
+          <div className="flex flex-col justify-center py-4 lg:py-8">
             <h2
               className="mb-8 font-serif text-3xl italic text-foreground md:text-4xl lg:text-5xl leading-tight reveal reveal-delay-2"
             >

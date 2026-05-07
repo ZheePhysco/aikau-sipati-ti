@@ -408,6 +408,19 @@ html.lenis body {
 }
 
 /* ─────────────────────────────────────────────
+   Gallery Aspect Ratio
+───────────────────────────────────────────── */
+.gallery-aspect {
+  aspect-ratio: 4 / 3;
+}
+
+@media (min-width: 768px) {
+  .gallery-aspect {
+    aspect-ratio: 3 / 4;
+  }
+}
+
+/* ─────────────────────────────────────────────
    Accordion
 ───────────────────────────────────────────── */
 .accordion-content {

@@ -55,6 +55,7 @@ export function SmartImage({
           src={src}
           alt={alt}
           fill
+          unoptimized={true}
           className={`${className || ''} ${noGrade ? '' : 'image-color-grade'}`.trim()}
           onError={() => setError(true)}
           priority={priority}
@@ -74,6 +75,7 @@ export function SmartImage({
         alt={alt}
         width={width || 800}
         height={height || 600}
+        unoptimized={true}
         className={`${className || ''} image-color-grade`.trim()}
         onError={() => setError(true)}
         priority={priority}

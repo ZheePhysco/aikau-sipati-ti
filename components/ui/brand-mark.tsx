@@ -49,6 +49,8 @@ export function BrandMark({ size = "md", className = "" }: BrandMarkProps) {
             src={IMAGES.logo}
             alt="Siolaakenen Muti'ti Logo"
             fill
+            unoptimized={true}
+            sizes="128px"
             className="object-cover"
           />
         </div>
